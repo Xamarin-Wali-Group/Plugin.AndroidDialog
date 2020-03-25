@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Box.Plugs.Dialog;
+using DialogTest.DialogTestView;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,6 +18,20 @@ namespace DialogTest
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            TestDialogView testDialog = new TestDialogView();
+            var dialog = DialogsServer.Instance.CustomDialog(testDialog,new DialogConfig() 
+            {
+                DialogPosition=DialogPosition.Center,
+                DimAmount=0,
+                DialogAnimation=DialogAnimation.PopupIn_PopupOut
+            });
+             dialog.ShowDialog();
+            //调试看看此View的值，就是弹窗View（TestDialogView）
+            var view = dialog.ContentView;
         }
     }
 }

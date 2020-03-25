@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="DialogTest.DialogTestView.TestDialogView">
+  <ContentView.Content>
+        <Frame CornerRadius="25" BackgroundColor="Red" IsClippedToBounds="False">
+            <StackLayout>
+                <Button Text="点击试试"></Button>
+                <Label Text="我是ContentView弹窗阿" />
+            </StackLayout>
+        </Frame>
+     
+  </ContentView.Content>
+</ContentView>

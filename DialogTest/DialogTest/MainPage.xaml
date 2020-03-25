@@ -7,6 +7,8 @@
              x:Class="DialogTest.MainPage">
 
     <StackLayout>
+
+        <Button Text="点击弹窗" Clicked="Button_Clicked"></Button>
         <!-- Place new controls here -->
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"

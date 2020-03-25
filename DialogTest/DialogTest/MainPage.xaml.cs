@@ -23,11 +23,12 @@ namespace DialogTest
         private async void Button_Clicked(object sender, EventArgs e)
         {
             TestDialogView testDialog = new TestDialogView();
+            //打开一个自定义弹窗
             var dialog = DialogsServer.Instance.CustomDialog(testDialog,new DialogConfig() 
             {
                 DialogPosition=DialogPosition.Center,
                 DimAmount=0,
-                DialogAnimation=DialogAnimation.PopupIn_PopupOut
+                DialogAnimation=DialogAnimation.PopupIn_PopupOut //弹窗打开动画
             });
              dialog.ShowDialog();
             //调试看看此View的值，就是弹窗View（TestDialogView）

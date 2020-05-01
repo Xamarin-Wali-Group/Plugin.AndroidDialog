@@ -26,9 +26,9 @@ namespace DialogTest
             //打开一个自定义弹窗
             var dialog = DialogsServer.Instance.CustomDialog(testDialog,new DialogConfig() 
             {
-                DialogPosition=DialogPosition.Buttom,
-                DimAmount=0,
-                DialogAnimation=DialogAnimation.SlideInButton_SlideOutButton//弹窗打开动画
+                DialogPosition=DialogPosition.Center,
+                DimAmount=.6f,
+                DialogAnimation=DialogAnimation.PopupIn_PopupOut//弹窗打开动画
             });
              dialog.ShowDialog();
             //调试看看此View的值，就是弹窗View（TestDialogView）

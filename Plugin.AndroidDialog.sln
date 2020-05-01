@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogTest.Android", "DialogTest\DialogTest.Android\DialogTest.Android.csproj", "{32B62530-22DC-4B02-8EE3-C892B7BB8626}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogTest", "DialogTest\DialogTest\DialogTest.csproj", "{640BCE3D-7FB2-49C6-A8CE-A1E388FA0B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DialogTest", "DialogTest\DialogTest\DialogTest.csproj", "{640BCE3D-7FB2-49C6-A8CE-A1E388FA0B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.PopUpDialog", "Plugin.PopUpDialog\Plugin.PopUpDialog.csproj", "{2F082E92-BB15-46DD-B70E-AC6756586624}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,18 @@ Global
 		{640BCE3D-7FB2-49C6-A8CE-A1E388FA0B0B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{640BCE3D-7FB2-49C6-A8CE-A1E388FA0B0B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{640BCE3D-7FB2-49C6-A8CE-A1E388FA0B0B}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|iPhone.Build.0 = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2F082E92-BB15-46DD-B70E-AC6756586624}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

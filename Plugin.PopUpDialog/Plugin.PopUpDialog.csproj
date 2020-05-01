@@ -1,0 +1,147 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
+
+	<PropertyGroup>
+		<!--Work around so the conditions work below-->
+		<TargetFrameworks></TargetFrameworks>
+		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81</TargetFrameworks>
+		<!--Feel free to add as many targets as you need below
+    netstandard1.0;netstandard2.0;MonoAndroid81;Xamarin.iOS10;uap10.0.16299;Xamarin.TVOS10;Xamarin.WatchOS10;Xamarin.Mac20;Tizen40
+    For UWP update the version number with a version number you have installed.
+    -->
+		<AssemblyName>Plugin.PopUpDialog</AssemblyName>
+		<RootNamespace>Plugin.PopUpDialog</RootNamespace>
+		<PackageId>Plugin.PopUpDialog</PackageId>
+
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+		<Version>1.0.0.0</Version>
+		<PackageVersion>1.0.0.0</PackageVersion>
+		<PackOnBuild>true</PackOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<LangVersion>default</LangVersion>
+		<DefineConstants>$(DefineConstants);</DefineConstants>
+
+		<UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+		<LangVersion>latest</LangVersion>
+		<DebugType>portable</DebugType>
+
+		<!--TODO: Fill these in-->
+		<PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
+		<PackageProjectUrl>https://github.com/d617617/Plugin.AndroidDialog</PackageProjectUrl>
+		<RepositoryUrl>https://www.nuget.org/</RepositoryUrl>
+		<PackageReleaseNotes>popup dialog,toast for xamarin from contentview</PackageReleaseNotes>
+		<PackageIconUrl>ICON URL</PackageIconUrl>
+		<PackageTags>xamarin, windows, ios, android, xamarin.forms, plugin, TablayoutPlugin</PackageTags>
+
+		<Title>Dialog,Toast Plugin for Xamarin form</Title>
+		<Summary>Summary of nuget</Summary>
+		<Description>this plug for xamarin for dialog</Description>
+
+
+		<Owners>Liwuyang</Owners>
+		<Authors>Liwuyang</Authors>
+		<Copyright>Copyright 2018</Copyright>
+		<UserSecretsId>1e6ae5d7-c748-4ab8-b079-a27ca9fae10e</UserSecretsId>
+		<FileVersion>1.0.0.0</FileVersion>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+		<Compile Include="Shared\**\*.cs" />
+		<PackageReference Include="Xamarin.Forms" Version="4.0.0.709238" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+		<Compile Include="**\*.uwp.cs" />
+		<!--
+    If you need to add sdk references:
+     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+    -->
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+		<Compile Include="Shared\**\*.cs" />
+		<Compile Include="Android\**\*.cs" />
+		<PackageReference Include="Xamarin.Forms" Version="4.0.0.709238" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+		<Compile Include="**\*.apple.cs" />
+	</ItemGroup>
+
+
+
+
+
+	<ItemGroup>
+		<Folder Include="IOS\" />
+	</ItemGroup>
+
+
+
+
+
+	<ItemGroup>
+	  <None Remove="Shared\DialogConfig.cs" />
+	</ItemGroup>
+
+
+
+
+
+
+
+
+
+	
+
+
+	<!--Additional item groups-->
+	<!--
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
+    <Compile Include="**\*.tvos.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
+    <Compile Include="**\*.watchos.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
+    <Compile Include="**\*.mac.cs" />
+  </ItemGroup>
+
+  
+   <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
+    <Compile Include="**\*.netcore.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Tizen')) ">
+    <Compile Include="**\*.tizen.cs" />
+    <PackageReference Include="Tizen.NET" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net45')) ">
+    <Compile Include="**\*.dotnet.cs" />
+  </ItemGroup>
+  -->
+</Project>

@@ -11,17 +11,16 @@ using Android.Views;
 using Android.Widget;
 using FragmentManager = Android.Support.V4.App.FragmentManager;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
-using Box.Plugs.Dialog;
-
-namespace BoxApp.Droid.DroidRender.UserDialogs
+namespace Plugin.PopUpDialog.Android
 {
-    public class DialogInstance : Java.Lang.Object, IDialog, IDialogInterfaceOnShowListener,
+    public class DialogInstance : Java.Lang.Object, Shared.IDialog, IDialogInterfaceOnShowListener,
         IDialogInterfaceOnDismissListener, IDialogInterfaceOnCancelListener
     {
         private BaseDialogFragment _dialogFragment;
         private FragmentManager _fragmentManage;
         private TaskCompletionSource<string> _mission;
- 
+        private string _dialogTag = "lwyDialog";
+        private static ulong _tagId = 0;
 
         public event Action DialogShowEvent;
 
@@ -61,15 +60,12 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         public void SetTaskMissonResult(string result)
         {
             _mission.SetResult(result);
-            CloseDialog();
+            Close();
         }
 
 
-
-
-
         /// <summary>
-        /// 用户打开之前添加回调事件
+        /// 为dialog添加回调事件,最后打开对话框
         /// </summary>
         void OpenDialogAddListener()
         {
@@ -77,19 +73,22 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 return;
             }
+            /*
+             注入事件
+             */
             InitDialogShowEvent();
             InitDialogDismissEvent();
             InitDialogCancelEvent();
             InitDialogNativeClicked();
-      
-            _dialogFragment.Show(_fragmentManage,null);
+        
+            _dialogFragment.Show(_fragmentManage, null);
         }
 
 
         /// <summary>
         /// 打开Dialog
         /// </summary>
-        public void ShowDialog()
+        public void Show()
         {
             OpenDialogAddListener();
         }
@@ -99,7 +98,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// 打开Dialog,异步等待结果
         /// </summary>
         /// <returns></returns>
-        public async Task<string> ShowDialogAsync()
+        public async Task<string> ShowAsync()
         {
             _mission = new TaskCompletionSource<String>();
             OpenDialogAddListener();
@@ -112,7 +111,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <summary>
         /// 关闭Dialog
         /// </summary>
-        public void CloseDialog()
+        public void Close()
         {
             if (_dialogFragment.IsHidden)
             {
@@ -150,16 +149,16 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
         void InitDialogNativeClicked()
         {
-            if (_dialogFragment.IsNative)
-            {
-                Xamarin.Forms.MessagingCenter.Subscribe<NativeDialogBtnClickListener, string>
-                 (this, null, (sender, result) =>
-                 {
-                     SetTaskMissonResult(result);
-                     Xamarin.Forms.MessagingCenter.Unsubscribe<NativeDialogBtnClickListener, string>(this,
-                         null);
-                 });
-            }
+            //if (_dialogFragment.IsNative)
+            //{
+            //    Xamarin.Forms.MessagingCenter.Subscribe<NativeDialogBtnClickListener, string>
+            //     (this, BaseDialogFragment.MessagingCenter_Tag, (sender, result) =>
+            //     {
+            //         SetTaskMissonResult(result);
+            //         Xamarin.Forms.MessagingCenter.Unsubscribe<NativeDialogBtnClickListener, string>(this,
+            //             BaseDialogFragment.MessagingCenter_Tag);
+            //     });
+            //}
         }
 
         public void OnShow(IDialogInterface dialog)
@@ -181,13 +180,9 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
         #endregion
 
-        #region 消除事件
-
-        #endregion
-
         #region  关闭已经打开的Dialog,消除缓存
         /// <summary>
-        /// 关闭已经打开的Dialog,消除缓存
+        /// 关闭已经打开的Dialog,消除缓存,同时
         /// </summary>
         void DestoryHasExistDialog()
         {
@@ -199,15 +194,12 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
         #region 释放资源
 
-
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             DestoryHasExistDialog();
             _mission = null;
         }
-
 
         #endregion
 

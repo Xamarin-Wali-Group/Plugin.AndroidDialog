@@ -11,23 +11,7 @@
 
         <Button Text="点击弹窗" Clicked="Button_Clicked"></Button>
         <!-- Place new controls here -->     
-        <maps:Map  HorizontalOptions="FillAndExpand"
-           VerticalOptions="FillAndExpand">
-            <x:Arguments>
-                <maps:MapSpan>
-                    <x:Arguments>
-                        <maps:Position>
-                            <x:Arguments>
-                                <x:Double>36.9628066</x:Double>
-                                <x:Double>-122.0194722</x:Double>
-                            </x:Arguments>
-                        </maps:Position>
-                        <x:Double>0.01</x:Double>
-                        <x:Double>0.01</x:Double>
-                    </x:Arguments>
-                </maps:MapSpan>
-            </x:Arguments>
-        </maps:Map>
+    
     </StackLayout>
 
 </ContentPage>

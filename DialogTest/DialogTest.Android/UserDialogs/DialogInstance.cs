@@ -61,7 +61,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         public void SetTaskMissonResult(string result)
         {
             _mission.SetResult(result);
-            CloseDialog();
+            Close();
         }
 
 
@@ -89,7 +89,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <summary>
         /// 打开Dialog
         /// </summary>
-        public void ShowDialog()
+        public void Show()
         {
             OpenDialogAddListener();
         }
@@ -99,7 +99,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// 打开Dialog,异步等待结果
         /// </summary>
         /// <returns></returns>
-        public async Task<string> ShowDialogAsync()
+        public async Task<string> ShowAsync()
         {
             _mission = new TaskCompletionSource<String>();
             OpenDialogAddListener();
@@ -112,7 +112,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <summary>
         /// 关闭Dialog
         /// </summary>
-        public void CloseDialog()
+        public void Close()
         {
             if (_dialogFragment.IsHidden)
             {

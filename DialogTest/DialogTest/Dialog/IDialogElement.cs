@@ -8,22 +8,36 @@ namespace Box.Plugs.Dialog
     /// 当View作为Dialog视图的时候，必须实现此接口
     /// </summary>
     public interface IDialogElement
-    {      
-
-        IDialog LwyDialog { get; set; }
-        
+    {          
 
         /// <summary>
         /// 获取该View默认的对话框配置
         /// </summary>
         /// <returns></returns>
-        DialogConfig GetViewDefaultDialogConfig();
+        DialogConfig GetDialogConfig();       
 
         /// <summary>
-        /// 获取对象，配置文本
+        /// 对话框元素被构造时调用
         /// </summary>
         /// <param name="dialogMsg"></param>
-        void SetDialogMsg(DialogMsg dialogMsg);
+        void OnCreated(IDialogMsg dialogMsg);
+
+        /// <summary>
+        /// dialog show后调用
+        /// </summary>
+        void OnShowed();
+
+        /// <summary>
+        /// dialog被关闭后调用
+        /// </summary>
+        void Closed();
+
+        /// <summary>
+        /// 对话框被摧毁时调用
+        /// </summary>
+        void OnDestory();
+
+
     }
 
     

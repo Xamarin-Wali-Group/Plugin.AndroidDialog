@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Box.Plugs.Dialog;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,6 +10,15 @@ namespace DialogTest
         public App()
         {
             InitializeComponent();
+            DialogsInitize dialogsServer = new DialogsInitize();
+            dialogsServer.MapDialogFromContentView(DialogType.Confirm,
+                () => new ContentView()
+                 )
+                .MapDialogConfig(new DialogConfig() 
+                {
+                    
+                });
+
 
             MainPage = new MainPage();
         }

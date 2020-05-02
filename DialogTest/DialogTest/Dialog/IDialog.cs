@@ -28,7 +28,7 @@ namespace Box.Plugs.Dialog
         /// <summary>
         /// 打开对话框
         /// </summary>
-        void ShowDialog();
+        void Show();
 
         /// <summary>
         ///  按钮响应可等待任务
@@ -41,12 +41,12 @@ namespace Box.Plugs.Dialog
         /// </summary>
         /// <returns></returns>
 
-        Task<string> ShowDialogAsync();
+        Task<string> ShowAsync();
 
         /// <summary>
         /// 关闭对话框
         /// </summary>
-        void CloseDialog();
+        void Close();
 
     
     }

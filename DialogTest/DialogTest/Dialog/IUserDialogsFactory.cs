@@ -7,18 +7,23 @@ namespace Box.Plugs.Dialog
 {
     public interface IUserDialogsFactory
     {
-        void Toast(string msg, DialogConfig config = null, bool islong = false, bool isNative = false);
-    
-        IDialog ButtonDialog(string msg, string button1Text, string button2Text, string button3Text=null,
-            DialogConfig config = null, bool isNative = false);
+        void Toast(string msg, bool islong = false, bool isNative = false);      
 
-        IDialog ButtonDialog(DialogMsg dialogMsg,
-          DialogConfig config = null, bool isNative = false);
+        IDialog CreateDialog(DialogType dialogType, IDialogMsg dialogMsg, DialogConfig config = null);
 
-        IDialog LoadDialog(string msg, DialogConfig config = null, bool isNative = false);
+        IDialog CreateDialog(View contentView, IDialogMsg dialogMsg, DialogConfig config);
+    }
 
-        IDialog LoadDialog(DialogMsg dialogMsg, DialogConfig config = null, bool isNative = false);
+    public enum DialogType 
+    {
+        Confirm,
+        Alert,
+        Load
 
-        IDialog CustomDialog(View view, DialogConfig config = null);
+    }
+
+    public interface IDialogMsg
+    {
+        string Msg { get; set; }
     }
 }

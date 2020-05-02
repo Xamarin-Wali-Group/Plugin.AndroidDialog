@@ -21,7 +21,7 @@ using Xamarin.Forms.Platform.Android;
 
 namespace BoxApp.Droid.DroidRender.UserDialogs
 {
-    public abstract class BaseDialogFragment : DialogFragment
+    public /*abstract*/ class BaseDialogFragment : DialogFragment
     {
 
         public event Action<Dialog> OnActivityCreatedEvent;
@@ -50,7 +50,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// 设置原生Dialog
         /// </summary>
         /// <returns></returns>
-        protected abstract Dialog SetNativeDialog();
+        protected virtual Dialog SetNativeDialog() { return null; }
 
 
         public BaseDialogFragment(IntPtr a, Android.Runtime.JniHandleOwnership b)

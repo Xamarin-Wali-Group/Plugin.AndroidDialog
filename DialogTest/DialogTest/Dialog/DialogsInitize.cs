@@ -66,6 +66,10 @@ namespace Box.Plugs.Dialog
                 : null;
         }
 
+        public View GetInitToastView() 
+        {
+            return _toastViewFunc?.Invoke();
+        }
     }
 
 

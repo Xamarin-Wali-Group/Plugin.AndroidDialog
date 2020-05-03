@@ -32,8 +32,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         {
             var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
             Density = mainDisplayInfo.Density;
-            var  dm = new Android.Util.DisplayMetrics();
-        
+            var dm = new Android.Util.DisplayMetrics();
+
             float density = dm.Density;
             WinowSize = new Size()
             {
@@ -57,7 +57,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <returns></returns>
         DialogConfig GetDialogConfigByView(DialogConfig config, Xamarin.Forms.View xfView)
         {
-            DialogConfig lastdialogConfig = config;       
+            DialogConfig lastdialogConfig = config;
             if (xfView is IDialogElement dialogElement)
             {
                 if (config == null)
@@ -85,136 +85,176 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
         public void Toast(string msg, DialogConfig config = null, bool islong = false, bool isNative = false)
         {
-            var dialogMsg = new DialogMsg()
-            {
-                ContentMsg = msg
-            };
-            Xamarin.Forms.View toastView = isNative ? null : DialogsInitize.ToastDialogsFunc?.Invoke();
-            DialogConfig lastdialogConfig = GetDialogConfigByView(config, toastView);
-            ToastDialogUtil toastDialog = new ToastDialogUtil(Context, toastView, lastdialogConfig
-                , dialogMsg, islong, isNative);
-            var toast = toastDialog.Builder();
-            if (toast != null)
-            {
-                toast.Show();
-            }
+            //var dialogMsg = new DialogMsg()
+            //{
+            //    ContentMsg = msg
+            //};
+            //Xamarin.Forms.View toastView = isNative ? null : DialogsInitize.ToastDialogsFunc?.Invoke();
+            //DialogConfig lastdialogConfig = GetDialogConfigByView(config, toastView);
+            //ToastDialogUtil toastDialog = new ToastDialogUtil(Context, toastView, lastdialogConfig
+            //    , dialogMsg, islong, isNative);
+            //var toast = toastDialog.Builder();
+            //if (toast != null)
+            //{
+            //    toast.Show();
+            //}
 
         }
 
         #endregion
 
         #region ButtonDialog
-        public IDialog ButtonDialog(string msg, string postiveBtn, string negativeBtn, string neutralbtn = null,
-       DialogConfig config = null, bool isNative = false)
-        {
-            var dialogMsg = new DialogMsg()
-            {
-                ContentMsg = msg,
-                PositiveButton = postiveBtn,
-                NegativeButton = negativeBtn,
-                NeutralButton = neutralbtn
-            };
-            var defaultAlertView = isNative ? null : DialogsInitize.ButtonDialogsFunc?.Invoke();
-            DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
-            var dialogFragment = new ButtonDialogFragment(Context,
-                defaultAlertView, lastdialogConfig, dialogMsg);
+        // public IDialog ButtonDialog(string msg, string postiveBtn, string negativeBtn, string neutralbtn = null,
+        //DialogConfig config = null, bool isNative = false)
+        // {
+        //     var dialogMsg = new DialogMsg()
+        //     {
+        //         ContentMsg = msg,
+        //         PositiveButton = postiveBtn,
+        //         NegativeButton = negativeBtn,
+        //         NeutralButton = neutralbtn
+        //     };
+        //     var defaultAlertView = isNative ? null : DialogsInitize.ButtonDialogsFunc?.Invoke();
+        //     DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
+        //     var dialogFragment = new ButtonDialogFragment(Context,
+        //         defaultAlertView, lastdialogConfig, dialogMsg);
 
-            var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
-            //if (defaultAlertView is IDialogElement dialogElement)
-            //{
-            //    dialogElement.LwyDialog = lwyDialogDroid;
-            //}
-            return lwyDialogDroid;
-        }
+        //     var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
+        //     //if (defaultAlertView is IDialogElement dialogElement)
+        //     //{
+        //     //    dialogElement.LwyDialog = lwyDialogDroid;
+        //     //}
+        //     return lwyDialogDroid;
+        // }
 
-        public IDialog ButtonDialog(DialogMsg dialogMsg,
-          DialogConfig config = null, bool isNative = false)
-        {
-            var defaultAlertView = isNative ? null : DialogsInitize.ButtonDialogsFunc?.Invoke();
-            DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
-            var dialogFragment = new ButtonDialogFragment(Context,
-                defaultAlertView, lastdialogConfig, dialogMsg);
+        //public IDialog ButtonDialog(DialogMsg dialogMsg,
+        //  DialogConfig config = null, bool isNative = false)
+        //{
+        //    var defaultAlertView = isNative ? null : DialogsInitize.ButtonDialogsFunc?.Invoke();
+        //    DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
+        //    var dialogFragment = new ButtonDialogFragment(Context,
+        //        defaultAlertView, lastdialogConfig, dialogMsg);
 
-            var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
-            //if (defaultAlertView is IDialogElement dialogElement)
-            //{
-            //    dialogElement.LwyDialog = lwyDialogDroid;
-            //}
-            return lwyDialogDroid;
-        }
+        //    var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
+        //    //if (defaultAlertView is IDialogElement dialogElement)
+        //    //{
+        //    //    dialogElement.LwyDialog = lwyDialogDroid;
+        //    //}
+        //    return lwyDialogDroid;
+        //}
 
         #endregion
 
 
         #region LoadDialog
-        public IDialog LoadDialog(string msg, DialogConfig config = null, bool isNative = false)
-        {
-            var dialogMsg = new DialogMsg()
-            {
-                ContentMsg = msg
-            };
-            var defaultAlertView = isNative ? null : DialogsInitize.LoadDialogsFunc?.Invoke();
-            DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
-            var dialogFragment = new LoadDialogFragment(Context,
-                defaultAlertView, lastdialogConfig, dialogMsg);
+        //public IDialog LoadDialog(string msg, DialogConfig config = null, bool isNative = false)
+        //{
+        //    var dialogMsg = new DialogMsg()
+        //    {
+        //        ContentMsg = msg
+        //    };
+        //    var defaultAlertView = isNative ? null : DialogsInitize.LoadDialogsFunc?.Invoke();
+        //    DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
+        //    var dialogFragment = new LoadDialogFragment(Context,
+        //        defaultAlertView, lastdialogConfig, dialogMsg);
 
-            var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
-            //if (defaultAlertView is IDialogElement dialogElement)
-            //{
-            //    dialogElement.LwyDialog = lwyDialogDroid;
-            //}
-            return lwyDialogDroid;
-        }
+        //    var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
+        //    //if (defaultAlertView is IDialogElement dialogElement)
+        //    //{
+        //    //    dialogElement.LwyDialog = lwyDialogDroid;
+        //    //}
+        //    return lwyDialogDroid;
+        //}
 
-        public IDialog LoadDialog(DialogMsg dialogMsg, DialogConfig config = null, bool isNative = false)
-        {
-            var defaultAlertView = isNative ? null : DialogsInitize.LoadDialogsFunc?.Invoke();
-            DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
-            var dialogFragment = new LoadDialogFragment(Context,
-                defaultAlertView, lastdialogConfig, dialogMsg);
+        //public IDialog LoadDialog(DialogMsg dialogMsg, DialogConfig config = null, bool isNative = false)
+        //{
+        //    var defaultAlertView = isNative ? null : DialogsInitize.LoadDialogsFunc?.Invoke();
+        //    DialogConfig lastdialogConfig = GetDialogConfigByView(config, defaultAlertView);
+        //    var dialogFragment = new LoadDialogFragment(Context,
+        //        defaultAlertView, lastdialogConfig, dialogMsg);
 
-            var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
-            //if (defaultAlertView is IDialogElement dialogElement)
-            //{
-            //    dialogElement.LwyDialog = lwyDialogDroid;
-            //}
-            return lwyDialogDroid;
-        }
+        //    var lwyDialogDroid = new DialogInstance(dialogFragment, FragmentManage, defaultAlertView);
+        //    //if (defaultAlertView is IDialogElement dialogElement)
+        //    //{
+        //    //    dialogElement.LwyDialog = lwyDialogDroid;
+        //    //}
+        //    return lwyDialogDroid;
+        //}
 
-        #endregion
+        //#endregion
 
-        #region CustomDialog
-        public IDialog CustomDialog(Xamarin.Forms.View view, DialogConfig config = null)
-        {
-            BaseDialogFragment baseDialogFragment = new ButtonDialogFragment(Context, view, config, null);
-            var lwyDialogDroid = new DialogInstance(baseDialogFragment, FragmentManage, view);
-            //if (view is IDialogElement dialogElement)
-            //{
-            //    dialogElement.LwyDialog = lwyDialogDroid;
-            //}
-            return lwyDialogDroid;
-        }
+        //#region CustomDialog
+        //public IDialog CustomDialog(Xamarin.Forms.View view, DialogConfig config = null)
+        //{
+        //    BaseDialogFragment baseDialogFragment = new ButtonDialogFragment(Context, view, config, null);
+        //    var lwyDialogDroid = new DialogInstance(baseDialogFragment, FragmentManage, view);
+        //    //if (view is IDialogElement dialogElement)
+        //    //{
+        //    //    dialogElement.LwyDialog = lwyDialogDroid;
+        //    //}
+        //    return lwyDialogDroid;
+        //}
 
-
-        #endregion
 
         #endregion
 
-                
+        #endregion
+
+        private static Activity _activity;
+
+        private DialogsInitize _dialogsInitize =>  DialogsInitize.Instance();
+
+        private  Android.Support.V4.App.FragmentManager _fragmentManager => _activity.GetFragmentManager();
+
+
+        public static void InitActivity(Activity activity)
+        {
+            _activity = activity;
+        }
 
         public IDialog CreateDialog(DialogType dialogType, IDialogMsg dialogMsg, DialogConfig config = null)
         {
-            throw new NotImplementedException();
+
+            var contentView = _dialogsInitize.GetInitDialogContentView(dialogType);          
+            if (contentView == null)
+            {
+                throw new Exception($"{dialogType} not map");
+            }
+            if (config==null)
+            {
+                config = _dialogsInitize.GetInitDialogConfig(dialogType);
+            }
+            var dialogFragment = new BaseDialogFragment(_activity,contentView, config, dialogMsg);
+            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
+            return dialogDroid;
         }
 
         public IDialog CreateDialog(Xamarin.Forms.View contentView, IDialogMsg dialogMsg, DialogConfig config)
         {
-            throw new NotImplementedException();
+            if(contentView == null)
+            {
+                throw new ArgumentException($"dialog contentView is null");
+            }
+            if (config==null)
+            {
+                config = new DialogConfig();
+            }
+            var dialogFragment = new BaseDialogFragment(_activity, contentView, config);
+            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
+            return dialogDroid;
         }
 
         public void Toast(string msg, bool islong = false, bool isNative = false)
         {
-            throw new NotImplementedException();
+            Xamarin.Forms.View toastView = isNative ? null : _dialogsInitize.GetInitToastView();
+           
+            //ToastDialogUtil toastDialog = new ToastDialogUtil(Context, toastView, lastdialogConfig
+            //    , dialogMsg, islong, isNative);
+            //var toast = toastDialog.Builder();
+            //if (toast != null)
+            //{
+            //    toast.Show();
+            //}
         }
     }
 }

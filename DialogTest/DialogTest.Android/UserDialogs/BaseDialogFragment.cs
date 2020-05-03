@@ -45,6 +45,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         protected DialogConfig _dialogConfig;
         protected DialogMsg _dialogMsg;
         protected ImageView _blurView;
+        protected IDialogElement _dialogElement;
+        protected IDialogMsg _iDialogMsg;
 
         /// <summary>
         /// 设置原生Dialog
@@ -71,6 +73,18 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             _dialogMsg = dialogMsg;
         }
 
+        public BaseDialogFragment(Context context, Xamarin.Forms.View view, 
+            DialogConfig dialogConfig,IDialogMsg dialogMsg)
+        {
+            _xfView = view;
+            _mContext = context;
+            _dialogConfig = dialogConfig;
+            _iDialogMsg = dialogMsg;
+            if (view is IDialogElement)
+            {
+                _dialogElement = view as IDialogElement;
+            }
+        }
 
 
         #region 释放事件
@@ -99,7 +113,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// </summary>
         /// <param name="xfSize"></param>
         /// <returns></returns>
-        protected virtual Size SetXFDialogSize(ref Xamarin.Forms.Size xfSize)
+        protected virtual Size SetDialogSize(ref Xamarin.Forms.Size xfSize)
         {
             xfSize = _xfView.Measure(DPoint.X, DPoint.Y).Request;
             var density = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Density;
@@ -172,10 +186,10 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 return;
             }
-            if (_xfView is IDialogElement dialogEle)
-            {
-                dialogEle.SetDialogMsg(dialogMsg);
-            }
+            //if (_xfView is IDialogElement dialogEle)
+            //{
+            //    dialogEle.SetDialogMsg(dialogMsg);
+            //}
         }
 
         #region 设置Dialog的window属性
@@ -233,22 +247,17 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            if (!IsNative)
+        {        
+            if (_dialogElement!=null)
             {
-                //设定文本
-                SetXFViewDialogMsgText(_dialogMsg);
-                var xfSize = new Xamarin.Forms.Size();
-                var droidView = _xfView.ConvertFormsToNative(_mContext);
-                _dialogSize = SetXFDialogSize(ref xfSize);
-                _xfView.Layout(new Xamarin.Forms.Rectangle(Xamarin.Forms.Point.Zero,
-                    xfSize));
-                return droidView;
+                _dialogElement.OnCreated(_iDialogMsg);
             }
-            else
-            {
-                return null;
-            }
+            var size = new Xamarin.Forms.Size();
+            var droidView = _xfView.ConvertFormsToNative(_mContext);
+            _dialogSize = SetDialogSize(ref size);
+            _xfView.Layout(new Xamarin.Forms.Rectangle(Xamarin.Forms.Point.Zero,
+                size));
+            return droidView;
         }
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
@@ -306,11 +315,13 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
         public override void OnDestroyView()
         {
-            if (View is ViewGroup) {
+
+            if (View is ViewGroup)
+            {
                 ((ViewGroup)View).RemoveAllViews();
             }
             DisposeEvent();
-            base.OnDestroyView();         
+            base.OnDestroyView();
             _xfView = null;
         }
 

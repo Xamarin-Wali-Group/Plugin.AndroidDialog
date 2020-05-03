@@ -16,7 +16,7 @@ namespace UserDialogs
 {
     public static class FormViewHelper
     {
-        public static View ConvertFormsToNative(this Xamarin.Forms.View view, Context context = null)
+        public static View ConvertFormsToNative(this Xamarin.Forms.View view, Context context)
         {
             var vRenderer = view.GetRenderer();
             if (vRenderer == null)

@@ -10,7 +10,7 @@ namespace DialogTest
         public App()
         {
             InitializeComponent();
-            DialogsInitize dialogsServer = new DialogsInitize();
+            DialogsInitize dialogsServer = DialogsInitize.Instance();
             dialogsServer.MapDialogFromContentView(DialogType.Confirm,
                 () => new ContentView()
                  )

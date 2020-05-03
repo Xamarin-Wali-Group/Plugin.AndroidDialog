@@ -56,6 +56,11 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             this.ContentView = view;
         }
 
+        public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage)
+        {
+            this._dialogFragment = dialogFragment;
+            this._fragmentManage = fragmentManage;
+        }
 
 
         public void SetTaskMissonResult(string result)

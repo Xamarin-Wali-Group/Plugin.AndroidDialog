@@ -22,17 +22,17 @@ namespace DialogTest
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            TestDialogView testDialog = new TestDialogView();
-            //打开一个自定义弹窗
-            var dialog = DialogsInitize.Instance.CustomDialog(testDialog,new DialogConfig() 
-            {
-                DialogPosition=DialogPosition.Center,
-                DimAmount=.6f,
-                DialogAnimation=DialogAnimation.PopupIn_PopupOut//弹窗打开动画
-            });
-             dialog.Show();
-            //调试看看此View的值，就是弹窗View（TestDialogView）
-            var view = dialog.ContentView;
+            //TestDialogView testDialog = new TestDialogView();
+            ////打开一个自定义弹窗
+            //var dialog = DialogsInitize.Instance.CustomDialog(testDialog,new DialogConfig() 
+            //{
+            //    DialogPosition=DialogPosition.Center,
+            //    DimAmount=.6f,
+            //    DialogAnimation=DialogAnimation.PopupIn_PopupOut//弹窗打开动画
+            //});
+            // dialog.Show();
+            ////调试看看此View的值，就是弹窗View（TestDialogView）
+            //var view = dialog.ContentView;
         }
     }
 }

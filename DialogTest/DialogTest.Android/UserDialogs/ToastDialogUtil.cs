@@ -93,7 +93,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
                 var dialogEle = _xfView as IDialogElement;
                 if (dialogEle != null)
                 {
-                    dialogEle.SetDialogMsg(_dialogMsg);
+                    //dialogEle.SetDialogMsg(_dialogMsg);
                 }
                 var droidView = _xfView.ConvertFormsToNative(_mContext);
                 _formSize = _xfView.Measure(DSizeByDensity.Width, DSizeByDensity.Height).Request;

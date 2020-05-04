@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Box.Plugs.Dialog;
+using DialogTest.Droid.UserDialogs;
 using Plugin.CurrentActivity;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -224,7 +225,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 config = _dialogsInitize.GetInitDialogConfig(dialogType);
             }
-            var dialogFragment = new BaseDialogFragment(_activity,contentView, config, dialogMsg);
+            var dialogFragment = new BaseDialogFragment2(_activity,contentView, config, dialogMsg);
             var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
             return dialogDroid;
         }
@@ -239,7 +240,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 config = new DialogConfig();
             }
-            var dialogFragment = new BaseDialogFragment(_activity, contentView, config);
+            var dialogFragment = new BaseDialogFragment2(_activity, contentView, config, dialogMsg);
             var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
             return dialogDroid;
         }

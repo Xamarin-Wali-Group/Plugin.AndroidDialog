@@ -12,13 +12,14 @@ using Android.Widget;
 using FragmentManager = Android.Support.V4.App.FragmentManager;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
 using Box.Plugs.Dialog;
+using DialogTest.Droid.UserDialogs;
 
 namespace BoxApp.Droid.DroidRender.UserDialogs
 {
     public class DialogInstance : Java.Lang.Object, IDialog, IDialogInterfaceOnShowListener,
         IDialogInterfaceOnDismissListener, IDialogInterfaceOnCancelListener
     {
-        private BaseDialogFragment _dialogFragment;
+        private BaseDialogFragment2 _dialogFragment;
         private FragmentManager _fragmentManage;
         private TaskCompletionSource<string> _mission;
  
@@ -50,13 +51,19 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage,
             Xamarin.Forms.View view)
         {
-            this._dialogFragment = dialogFragment;
-            this._fragmentManage = fragmentManage;          
-            this.DialogDismissEvent += DestoryHasExistDialog;
-            this.ContentView = view;
+            //this._dialogFragment = dialogFragment;
+            //this._fragmentManage = fragmentManage;          
+            //this.DialogDismissEvent += DestoryHasExistDialog;
+            //this.ContentView = view;
         }
 
         public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage)
+        {
+            //this._dialogFragment = dialogFragment;
+            //this._fragmentManage = fragmentManage;
+        }
+
+        public DialogInstance(BaseDialogFragment2 dialogFragment, FragmentManager fragmentManage)
         {
             this._dialogFragment = dialogFragment;
             this._fragmentManage = fragmentManage;
@@ -82,10 +89,10 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 return;
             }
-            InitDialogShowEvent();
-            InitDialogDismissEvent();
-            InitDialogCancelEvent();
-            InitDialogNativeClicked();
+            //InitDialogShowEvent();
+            //InitDialogDismissEvent();
+            //InitDialogCancelEvent();
+            //InitDialogNativeClicked();
       
             _dialogFragment.Show(_fragmentManage,null);
         }
@@ -129,43 +136,43 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
 
         #region 注入事件
-        void InitDialogShowEvent()
-        {
-            _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-            {
-                dialog.SetOnShowListener(this);
-            };
-        }
+        //void InitDialogShowEvent()
+        //{
+        //    _dialogFragment.OnActivityCreatedEvent += (dialog) =>
+        //    {
+        //        dialog.SetOnShowListener(this);
+        //    };
+        //}
 
-        void InitDialogDismissEvent()
-        {
-            _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-            {
-                dialog.SetOnDismissListener(this);
-            };
-        }
+        //void InitDialogDismissEvent()
+        //{
+        //    _dialogFragment.OnActivityCreatedEvent += (dialog) =>
+        //    {
+        //        dialog.SetOnDismissListener(this);
+        //    };
+        //}
 
-        void InitDialogCancelEvent()
-        {
-            _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-            {
-                dialog.SetOnCancelListener(this);
-            };
-        }
+        //void InitDialogCancelEvent()
+        //{
+        //    _dialogFragment.OnActivityCreatedEvent += (dialog) =>
+        //    {
+        //        dialog.SetOnCancelListener(this);
+        //    };
+        //}
 
-        void InitDialogNativeClicked()
-        {
-            if (_dialogFragment.IsNative)
-            {
-                Xamarin.Forms.MessagingCenter.Subscribe<NativeDialogBtnClickListener, string>
-                 (this, null, (sender, result) =>
-                 {
-                     SetTaskMissonResult(result);
-                     Xamarin.Forms.MessagingCenter.Unsubscribe<NativeDialogBtnClickListener, string>(this,
-                         null);
-                 });
-            }
-        }
+        //void InitDialogNativeClicked()
+        //{
+        //    if (_dialogFragment.IsNative)
+        //    {
+        //        Xamarin.Forms.MessagingCenter.Subscribe<NativeDialogBtnClickListener, string>
+        //         (this, null, (sender, result) =>
+        //         {
+        //             SetTaskMissonResult(result);
+        //             Xamarin.Forms.MessagingCenter.Unsubscribe<NativeDialogBtnClickListener, string>(this,
+        //                 null);
+        //         });
+        //    }
+        //}
 
         public void OnShow(IDialogInterface dialog)
         {
@@ -178,8 +185,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         }
 
         public void OnCancel(IDialogInterface dialog)
-        {
-            
+        {            
             DialogCancelEvent?.Invoke();
         }
 
@@ -200,7 +206,6 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             _fragmentManage.BeginTransaction().Remove(_dialogFragment);
         }
         #endregion
-
 
         #region 释放资源
 

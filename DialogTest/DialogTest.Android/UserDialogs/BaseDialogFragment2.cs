@@ -154,6 +154,39 @@ namespace DialogTest.Droid.UserDialogs
         }
         #endregion
 
+        /// <summary>
+        /// 设置弹出动画
+        /// </summary>
+        /// <returns></returns>
+        protected virtual int SetDialogAnimation()
+        {
+            int dialogAnimateResource = -1;
+            switch (_dialogConfig.DialogAnimation)
+            {
+                case DialogAnimation.PopupIn_PopupOut:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_popup;
+                    break;
+                case DialogAnimation.FadeIn_FadeOut:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_fade;
+                    break;
+                case DialogAnimation.SlideInTop_SlideOutTop:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_slide_top;
+                    break;
+                case DialogAnimation.SlideInButton_SlideOutButton:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_slide_bottom;
+                    break;
+                case DialogAnimation.Tooltip:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_tooltip;
+                    break;
+                case DialogAnimation.Grow_fade_in_Shrink_Fadeout:
+                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_grow_fade;
+                    break;
+                default:
+                    break;
+            }
+            return dialogAnimateResource;
+        }
+
         public override void OnStart()
         {
             base.OnStart();
@@ -163,6 +196,7 @@ namespace DialogTest.Droid.UserDialogs
             SetDialogWindowPosition(attrs);
             SetDialogWindowBGDrawable(window);
             SetDialogWindowFlags(window, attrs);
+            attrs.WindowAnimations = SetDialogAnimation();
             window.Attributes = attrs;
             //点击手机返回按键是否允许对话框消失
             Dialog.SetCancelable(_dialogConfig.IsLockBackKey);

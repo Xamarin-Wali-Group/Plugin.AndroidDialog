@@ -22,6 +22,14 @@ namespace DialogTest
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
+            var factory=DependencyService.Get<IUserDialogsFactory>();
+            var dialog=factory.CreateDialog(DialogType.Confirm, new TestDilaogMsg() 
+            {
+                BtnMsg="测试按钮信息",
+                Msg="测试信息2"
+            });
+            dialog.Show();
+            //var str=await dialog.ShowAsync()
             //TestDialogView testDialog = new TestDialogView();
             ////打开一个自定义弹窗
             //var dialog = DialogsInitize.Instance.CustomDialog(testDialog,new DialogConfig() 

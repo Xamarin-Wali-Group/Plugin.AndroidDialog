@@ -37,8 +37,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 resultStr = _dialogMsg.NeutralButton;
             }
-            MessagingCenter.Send<NativeDialogBtnClickListener, string>
-                (this, BaseDialogFragment.MessagingCenter_Tag, resultStr);
+            //MessagingCenter.Send<NativeDialogBtnClickListener, string>
+            //    (this, BaseDialogFragment.MessagingCenter_Tag, resultStr);
         }
     }
 }

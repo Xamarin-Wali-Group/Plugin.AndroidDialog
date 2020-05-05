@@ -12,12 +12,9 @@ namespace DialogTest
             InitializeComponent();
             DialogsInitize dialogsServer = DialogsInitize.Instance();
             dialogsServer.MapDialogFromContentView(DialogType.Confirm,
-                () => new ContentView()
+                () => new DialogTestView.TestDialogView()
                  )
-                .MapDialogConfig(new DialogConfig() 
-                {
-                    
-                });
+                .MapDialogConfig(new DialogConfig() );
 
 
             MainPage = new MainPage();

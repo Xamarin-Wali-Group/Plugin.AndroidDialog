@@ -48,25 +48,13 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         {
         }
 
-        public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage,
-            Xamarin.Forms.View view)
-        {
-            //this._dialogFragment = dialogFragment;
-            //this._fragmentManage = fragmentManage;          
-            //this.DialogDismissEvent += DestoryHasExistDialog;
-            //this.ContentView = view;
-        }
-
-        public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage)
-        {
-            //this._dialogFragment = dialogFragment;
-            //this._fragmentManage = fragmentManage;
-        }
+    
 
         public DialogInstance(BaseDialogFragment2 dialogFragment, FragmentManager fragmentManage)
         {
             this._dialogFragment = dialogFragment;
             this._fragmentManage = fragmentManage;
+            
         }
 
 
@@ -83,27 +71,22 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <summary>
         /// 用户打开之前添加回调事件
         /// </summary>
-        void OpenDialogAddListener()
+        void OpenDialog()
         {
             if (_dialogFragment.IsAdded)
             {
                 return;
-            }
-            //InitDialogShowEvent();
-            //InitDialogDismissEvent();
-            //InitDialogCancelEvent();
-            //InitDialogNativeClicked();
-      
-            _dialogFragment.Show(_fragmentManage,null);
+            }      
+            _dialogFragment.Show(_fragmentManage,null);          
         }
 
-
+    
         /// <summary>
         /// 打开Dialog
         /// </summary>
         public void Show()
         {
-            OpenDialogAddListener();
+            OpenDialog();
         }
 
 
@@ -114,8 +97,9 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         public async Task<string> ShowAsync()
         {
             _mission = new TaskCompletionSource<String>();
-            OpenDialogAddListener();
+            OpenDialog();
             var result = await _mission.Task;
+            
             return result;
         }
 
@@ -200,7 +184,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <summary>
         /// 关闭已经打开的Dialog,消除缓存
         /// </summary>
-        void DestoryHasExistDialog()
+        void DestoryDialog()
         {
             _dialogFragment.DismissAllowingStateLoss();
             _fragmentManage.BeginTransaction().Remove(_dialogFragment);
@@ -214,7 +198,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            DestoryHasExistDialog();
+            DestoryDialog();
             _mission = null;
         }
 

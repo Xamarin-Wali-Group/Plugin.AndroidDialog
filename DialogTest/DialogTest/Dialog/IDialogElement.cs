@@ -9,13 +9,7 @@ namespace Box.Plugs.Dialog
     /// </summary>
     public interface IDialogElement
     {          
-
-        /// <summary>
-        /// 获取该View默认的对话框配置
-        /// </summary>
-        /// <returns></returns>
-        DialogConfig GetDialogConfig();       
-
+  
         /// <summary>
         /// 对话框元素被构造时调用
         /// </summary>
@@ -30,14 +24,14 @@ namespace Box.Plugs.Dialog
         /// <summary>
         /// dialog被关闭后调用
         /// </summary>
-        void Closed();
+        void OnClosed();
 
         /// <summary>
         /// 对话框被摧毁时调用
         /// </summary>
         void OnDestory();
 
-
+    
     }
 
     

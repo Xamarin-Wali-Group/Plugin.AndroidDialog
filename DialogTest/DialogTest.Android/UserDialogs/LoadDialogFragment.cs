@@ -27,21 +27,21 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
       
 
-        protected override Dialog SetNativeDialog()
-        {
-            var progressDialog = new ProgressDialog(Context);
-            SetNativeLoadDialogMsgText(progressDialog,_dialogMsg);
-            return progressDialog;
-        }
+        //protected override Dialog SetNativeDialog()
+        //{
+        //    var progressDialog = new ProgressDialog(Context);
+        //    SetNativeLoadDialogMsgText(progressDialog,_dialogMsg);
+        //    return progressDialog;
+        //}
 
-        protected override void SetDialogWindowBGDrawable()
-        {
-            if (IsNative)
-            {
-                _dialogConfig.BackgroundColor = Xamarin.Forms.Color.White;
-            }
-            base.SetDialogWindowBGDrawable();
-        }
+        //protected override void SetDialogWindowBGDrawable()
+        //{
+        //    if (IsNative)
+        //    {
+        //        _dialogConfig.BackgroundColor = Xamarin.Forms.Color.White;
+        //    }
+        //    base.SetDialogWindowBGDrawable();
+        //}
 
         protected virtual void SetNativeLoadDialogMsgText(ProgressDialog progressDialog,DialogMsg  dialogMsg) 
         {

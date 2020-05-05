@@ -20,24 +20,24 @@ namespace Box.Plugs.Dialog
         public Color BackgroundColor { get; set; } = Color.Transparent;
 
         /// <summary>
-        /// 是否锁住屏幕
+        /// 触碰Mask是否能关闭dialog，默认为true
         /// </summary>
         public bool IsCloseByTouchMask { get; set; } = true;
 
         /// <summary>
-        /// 是否屏蔽后退键
+        /// 是否能被返回键和触摸mask的方式关闭，默认为true
         /// </summary>
-        public bool IsLockBackKey { get; set; }
-
+        public bool IsCanCancel { get; set; } = true;
+       
         /// <summary>
-        /// 只拦截部分View的touch 事件
+        /// 默认为false，若为true，则Mask会消失，则不再拦截Mask的touch事件。       
         /// </summary>
         public bool NotTouchModal { get; set; }
 
         /// <summary>
         /// X偏移距离
         /// </summary>
-        public float XOffset { get; set; }
+        public float XOffset { get; set; } 
 
         /// <summary>
         /// Y偏移距离

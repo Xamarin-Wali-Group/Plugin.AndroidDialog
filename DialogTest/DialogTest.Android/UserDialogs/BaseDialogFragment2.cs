@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Box.Plugs.Dialog;
+using DialogTest.DialogTestView;
 using UserDialogs;
 using Xamarin.Forms.Platform.Android;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
@@ -25,12 +26,12 @@ namespace DialogTest.Droid.UserDialogs
         {
             get
             {
-                if (_windowSize.X != 0 && _windowSize.Y != 0)
+                if (_windowSize != null && _windowSize.X != 0 && _windowSize.Y != 0)
                 {
                     return _windowSize;
                 }
-                var activity = _context;
-                Display display = activity.WindowManager.DefaultDisplay;
+                _windowSize = new Point();
+                Display display = _context.WindowManager.DefaultDisplay;
                 display.GetSize(_windowSize);
                 return _windowSize;
             }
@@ -44,6 +45,7 @@ namespace DialogTest.Droid.UserDialogs
                 if (_density == 0)
                 {
                     var dm = new Android.Util.DisplayMetrics();
+                    _context.WindowManager.DefaultDisplay.GetMetrics(dm);
                     _density = dm.Density;
                 }
                 return _density;
@@ -70,6 +72,7 @@ namespace DialogTest.Droid.UserDialogs
             _dialogConfig = dialogConfig;
             _iDialogMsg = dialogMsg;
             _contentView = contentView;
+            _dialogViewSize = new Point();
             if (contentView is IDialogElement)
             {
                 _dialogElement = contentView as IDialogElement;
@@ -82,6 +85,13 @@ namespace DialogTest.Droid.UserDialogs
             UnRegisterEvent();
         }
 
+
+        public override Dialog OnCreateDialog(Bundle savedInstanceState)
+        {
+            return base.OnCreateDialog(savedInstanceState);
+        }
+
+
         /// <summary>
         /// 构造XF中对应的ContentView
         /// </summary>
@@ -91,7 +101,7 @@ namespace DialogTest.Droid.UserDialogs
         /// <returns></returns>
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var dialogView = _contentView.ConvertFormsToNative(_context);
+            var dialogView = _contentView.ConvertFormsToNative(_context.ApplicationContext);
             _dialogElement?.OnCreated(_iDialogMsg);
             return dialogView;
         }
@@ -105,10 +115,12 @@ namespace DialogTest.Droid.UserDialogs
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            view.Measure(WindowSize.X, WindowSize.Y);
-            view.Layout(0, 0, view.MeasuredWidth, view.MeasuredHeight);
-            _dialogViewSize = new Point(view.MeasuredWidth, view.MeasuredHeight);
+            var size = _contentView.Measure(WindowSize.X / this.Density, WindowSize.Y / this.Density).Request;
+            _contentView.Layout(new Xamarin.Forms.Rectangle(0, 0, size.Width, size.Height));
+            _dialogViewSize.X = (int)Math.Ceiling(size.Width * Density);
+            _dialogViewSize.Y = (int)Math.Ceiling(size.Height * Density);
         }
+
 
         #region 设置Dialog的window属性
 
@@ -152,7 +164,6 @@ namespace DialogTest.Droid.UserDialogs
             var dw = new ColorDrawable(andColor);
             window.SetBackgroundDrawable(dw);
         }
-        #endregion
 
         /// <summary>
         /// 设置弹出动画
@@ -187,6 +198,26 @@ namespace DialogTest.Droid.UserDialogs
             return dialogAnimateResource;
         }
 
+
+        #endregion
+
+        #region 设置Dialog的关闭方式
+        public void SetDialogCloseWays(DialogConfig config, Dialog dialog)
+        {
+            if (!config.IsCanCancel)
+            {
+                dialog.SetCancelable(false);
+                return;
+            }
+            if (!config.IsCloseByTouchMask)
+            {
+                dialog.SetCancelable(true);
+                dialog.SetCanceledOnTouchOutside(false);
+            }
+        }
+        #endregion
+       
+
         public override void OnStart()
         {
             base.OnStart();
@@ -198,10 +229,18 @@ namespace DialogTest.Droid.UserDialogs
             SetDialogWindowFlags(window, attrs);
             attrs.WindowAnimations = SetDialogAnimation();
             window.Attributes = attrs;
-            //点击手机返回按键是否允许对话框消失
-            Dialog.SetCancelable(_dialogConfig.IsLockBackKey);
-          
+            SetDialogCloseWays(_dialogConfig,Dialog);
+            Dialog.DismissEvent += Dialog_DismissEvent;
+
         }
+
+        private void Dialog_DismissEvent(object sender, EventArgs e)
+        {
+            this.DismissAllowingStateLoss();            
+            this.FragmentManager.BeginTransaction().Remove(this).Commit();
+        }
+
+      
 
 
 
@@ -210,7 +249,6 @@ namespace DialogTest.Droid.UserDialogs
         /// </summary>
         protected virtual void UnRegisterEvent()
         {
-
             if (Dialog != null)
             {
                 try
@@ -230,9 +268,10 @@ namespace DialogTest.Droid.UserDialogs
 
         public override void OnDestroy()
         {
-            UnRegisterEvent();
+            UnRegisterEvent();           
+            _dialogElement?.OnDestory();            
             base.OnDestroy();
-            _dialogElement?.OnDestory();
+            _contentView = null;
         }
 
 

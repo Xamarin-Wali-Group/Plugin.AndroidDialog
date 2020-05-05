@@ -35,7 +35,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         {
             get
             {
-                return UserDialogsFactory.WindowPoint;
+                return new Point();
+                //return UserDialogsFactory.WindowPoint;
             }
         }
 
@@ -73,8 +74,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             _dialogMsg = dialogMsg;
         }
 
-        public BaseDialogFragment(Context context, Xamarin.Forms.View view, 
-            DialogConfig dialogConfig,IDialogMsg dialogMsg)
+        public BaseDialogFragment(Context context, Xamarin.Forms.View view,
+            DialogConfig dialogConfig, IDialogMsg dialogMsg)
         {
             _xfView = view;
             _mContext = context;
@@ -204,8 +205,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 attrs.Gravity = (GravityFlags)((int)_dialogConfig.DialogPosition);
             }
-            attrs.X = (int)Math.Ceiling(_dialogConfig.XOffset * UserDialogsFactory.Density);
-            attrs.Y = (int)Math.Ceiling(_dialogConfig.YOffset * UserDialogsFactory.Density);
+            attrs.X = (int)Math.Ceiling(_dialogConfig.XOffset *1 /*UserDialogsFactory.Density*/);
+            attrs.Y = (int)Math.Ceiling(_dialogConfig.YOffset * 1/*UserDialogsFactory.Density*/);
         }
 
         void SetDialogWindowSize(WindowManagerLayoutParams attrs)
@@ -247,8 +248,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {        
-            if (_dialogElement!=null)
+        {
+            if (_dialogElement != null)
             {
                 _dialogElement.OnCreated(_iDialogMsg);
             }
@@ -286,7 +287,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
             DWindow.Attributes = attrs;
             Dialog.SetCancelable(_dialogConfig.IsCloseByTouchMask);
-            Dialog.SetOnKeyListener(new DialogBackKeyLister(_dialogConfig.IsLockBackKey));
+            //Dialog.SetOnKeyListener(new DialogBackKeyLister(_dialogConfig.IsCloseByBackKey));
         }
 
         public override void OnAttach(Context context)

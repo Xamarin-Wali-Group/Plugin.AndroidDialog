@@ -18,19 +18,17 @@ namespace DialogTest.DialogTestView
             InitializeComponent();
         }
 
-        public void Closed()
+
+        public void OnClosed()
         {
 
         }
 
-        public DialogConfig GetDialogConfig()
-        {
-            return new DialogConfig();
-        }
+
 
         public void OnCreated(IDialogMsg dialogMsg)
         {
-            var dMsg= dialogMsg as TestDilaogMsg;
+            var dMsg = dialogMsg as TestDilaogMsg;
             this.btn.Text = dMsg.BtnMsg;
             this.lbl.Text = dMsg.Msg;
         }

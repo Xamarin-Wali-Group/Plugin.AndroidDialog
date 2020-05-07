@@ -10,15 +10,15 @@ namespace Box.Plugs.Dialog
 
         
 
-        Xamarin.Forms.View ContentView { get;  }
+        Xamarin.Forms.View DialogView { get;  }
 
         /// <summary>
         /// 打开对话框
         /// </summary>
-        void Show();    
+        void Show();
 
         /// <summary>
-        /// 打开对话框，同时启动可等待任务，等待用户的响应
+        /// 打开对话框，同时启动可等待任务，等待用户的响应        
         /// </summary>
         /// <returns></returns>
 

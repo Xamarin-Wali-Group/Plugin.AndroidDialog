@@ -28,12 +28,8 @@ namespace Box.Plugs.Dialog
         /// </summary>
         void OnClosed();
 
-        /// <summary>
-        /// 对话框被摧毁时调用
-        /// </summary>
+
         void OnDestory();
-
-
     }
 
 

@@ -7,7 +7,9 @@ namespace Box.Plugs.Dialog
 {
     public interface IUserDialogsFactory
     {
-        void Toast(string msg, bool islong = false, bool isNative = false);      
+        void Toast(string msg, bool isNative = false,bool islong=false);
+
+        void Toast(IDialogMsg dialogMsg, DialogConfig config = null, bool islong = false, bool isNative = false);
 
         IDialog CreateDialog(DialogType dialogType, IDialogMsg dialogMsg, DialogConfig config = null);
 

@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Box.Plugs.Dialog;
+using DialogTest.Dialog;
 using DialogTest.Droid.UserDialogs;
 using Plugin.CurrentActivity;
 using Xamarin.Essentials;
@@ -47,9 +49,12 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 config = _dialogsInitize.GetInitDialogConfig(dialogType);
             }
-            DialogResultManager resultManager = new DialogResultManager();
-            var dialogFragment = new BaseDialogFragment2(_activity,contentView, config, dialogMsg);
-            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
+            DialogResultManager manager = new DialogResultManager();
+            manager.Build();
+            var dialogFragment = new BaseDialogFragment2(_activity,contentView, config, dialogMsg,
+                manager.GetDialogResult());
+            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager,contentView,
+                manager.GetResultMission());
             return dialogDroid;
         }
 
@@ -63,22 +68,48 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 config = new DialogConfig();
             }
-            var dialogFragment = new BaseDialogFragment2(_activity, contentView, config, dialogMsg);
-            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
+            IDialogResult dialogResult = null;
+            TaskCompletionSource<string> mission = null;
+            if (contentView is IDialogElement)
+            {
+                DialogResultManager manager = new DialogResultManager();
+                manager.Build();
+                dialogResult = manager.GetDialogResult();
+                mission = manager.GetResultMission();
+            }
+            var dialogFragment = new BaseDialogFragment2(_activity, contentView, config, dialogMsg, dialogResult);
+            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager,contentView ,mission);
             return dialogDroid;
         }
 
         public void Toast(string msg, bool islong = false, bool isNative = false)
         {
             Xamarin.Forms.View toastView = isNative ? null : _dialogsInitize.GetInitToastView();
-           
-            //ToastDialogUtil toastDialog = new ToastDialogUtil(Context, toastView, lastdialogConfig
-            //    , dialogMsg, islong, isNative);
-            //var toast = toastDialog.Builder();
-            //if (toast != null)
-            //{
-            //    toast.Show();
-            //}
+            var config = new DialogConfig() { DialogPosition=DialogPosition.ToastDefault};
+            var dialogMsg = new ToastMsg() { Msg=msg};
+            ToastDialogUtil toastDialog = new ToastDialogUtil(_activity, toastView, config
+                , dialogMsg, islong, isNative);
+            var toast = toastDialog.Builder();
+            if (toast != null)
+            {
+                toast.Show();
+            }
+        }
+
+        public void Toast(IDialogMsg dialogMsg, DialogConfig config = null, bool islong = false, bool isNative = false)
+        {
+            Xamarin.Forms.View toastView = isNative ? null : _dialogsInitize.GetInitToastView();
+            if (config==null)
+            {
+                config = new DialogConfig() { DialogPosition = DialogPosition.ToastDefault };
+            }                        
+            ToastDialogUtil toastDialog = new ToastDialogUtil(_activity, toastView, config
+                , dialogMsg, islong, isNative);
+            var toast = toastDialog.Builder();
+            if (toast != null)
+            {
+                toast.Show();
+            }
         }
     }
 }

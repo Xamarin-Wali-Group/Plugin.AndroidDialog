@@ -7,11 +7,13 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Media.TV;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Box.Plugs.Dialog;
+using DialogTest.Dialog;
 using UserDialogs;
 using Xamarin.Forms.Platform.Android;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
@@ -58,8 +60,8 @@ namespace DialogTest.Droid.UserDialogs
         protected IDialogElement _dialogElement;
         protected IDialogMsg _iDialogMsg;
         protected Point _dialogViewSize;
-
-        public bool IsViewDialogElement { get => _dialogElement == null; }
+        protected IDialogResult _dialogResult;
+        
 
         public BaseDialogFragment2(IntPtr a, Android.Runtime.JniHandleOwnership b)
         {
@@ -67,16 +69,17 @@ namespace DialogTest.Droid.UserDialogs
         }
 
         public BaseDialogFragment2(Activity activity, Xamarin.Forms.View contentView,
-         DialogConfig dialogConfig, IDialogMsg dialogMsg)
+         DialogConfig dialogConfig, IDialogMsg dialogMsg, IDialogResult dialogResult=null)
         {
             _context = activity;
             _dialogConfig = dialogConfig;
             _iDialogMsg = dialogMsg;
             _contentView = contentView;
             _dialogViewSize = new Point();
-            if (contentView is IDialogElement)
+            _dialogResult = dialogResult;
+            if (contentView is IDialogElement dialogElement)
             {
-                _dialogElement = contentView as IDialogElement;
+                _dialogElement = contentView as IDialogElement;                
             }
         }
 
@@ -106,7 +109,7 @@ namespace DialogTest.Droid.UserDialogs
             _dialogElement?.OnCreated(_iDialogMsg);
             if (_dialogElement!=null)
             {
-                _dialogElement.DialogResult = null;
+                _dialogElement.DialogResult = _dialogResult;
             }
             return dialogView;
         }
@@ -235,18 +238,24 @@ namespace DialogTest.Droid.UserDialogs
             attrs.WindowAnimations = SetDialogAnimation();
             window.Attributes = attrs;
             SetDialogCloseWays(_dialogConfig, Dialog);
-            Dialog.DismissEvent += Dialog_DismissEvent;
-
+            if (_dialogElement!=null)
+            {
+                Dialog.DismissEvent += DialogDismiss_ElementClose;
+            }
+            Dialog.DismissEvent += DialogDismiss_DisposeFragment;            
         }
 
-
+        void DialogDismiss_ElementClose(object sender, EventArgs e) 
+        {
+            _dialogElement.OnClosed();
+        }
 
         /// <summary>
         /// dialog关闭后，释放资源，销毁fragment
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Dialog_DismissEvent(object sender, EventArgs e)
+         void DialogDismiss_DisposeFragment(object sender, EventArgs e)
         {
             this.DismissAllowingStateLoss();
             this.FragmentManager.BeginTransaction().Remove(this).Commit();
@@ -262,7 +271,7 @@ namespace DialogTest.Droid.UserDialogs
             if (Dialog != null)
             {
                 try
-                {
+                {                    
                     Dialog.SetOnKeyListener(null);
                     Dialog.SetOnShowListener(null);
                     Dialog.SetOnDismissListener(null);
@@ -277,11 +286,10 @@ namespace DialogTest.Droid.UserDialogs
 
 
         public override void OnDestroy()
-        {
-            UnRegisterEvent();
+        {            
             _dialogElement?.OnDestory();
-            base.OnDestroy();
-            _contentView = null;
+            UnRegisterEvent();            
+            base.OnDestroy();            
         }
 
 

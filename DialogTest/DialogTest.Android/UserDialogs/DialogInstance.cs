@@ -20,14 +20,14 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
     public class DialogInstance : Java.Lang.Object, IDialog
     {
         private BaseDialogFragment2 _dialogFragment;
-        private FragmentManager _fragmentManage;      
+        private FragmentManager _fragmentManage;
         private TaskCompletionSource<string> _misson;
 
 
 
 
-        public Xamarin.Forms.View ContentView { get; private set; }
-      
+        public Xamarin.Forms.View DialogView { get; private set; }
+
 
         /// <summary>
         /// 增加此构造，解决unable to activate instance of type 。。。
@@ -40,11 +40,15 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
 
 
-        public DialogInstance(BaseDialogFragment2 dialogFragment, FragmentManager fragmentManage,TaskCompletionSource<string> misson)
+        public DialogInstance(BaseDialogFragment2 dialogFragment, 
+            FragmentManager fragmentManage, 
+            Xamarin.Forms.View dialogView,
+            TaskCompletionSource<string> misson = null)
         {
             this._dialogFragment = dialogFragment;
             this._fragmentManage = fragmentManage;
             this._misson = misson;
+            this.DialogView = dialogView;
         }
 
 
@@ -55,13 +59,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         }
 
 
-
-
-
-        /// <summary>
-        /// 用户打开之前添加回调事件
-        /// </summary>
-        void OpenDialog()
+        void ShowDialog()
         {
             if (_dialogFragment.IsAdded)
             {
@@ -70,13 +68,12 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             _dialogFragment.Show(_fragmentManage, null);
         }
 
-
         /// <summary>
         /// 打开Dialog
         /// </summary>
         public void Show()
         {
-            OpenDialog();
+            ShowDialog();
         }
 
 
@@ -86,18 +83,17 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <returns></returns>
         public async Task<string> ShowAsync()
         {
-            
-            OpenDialog();
-            //if (_dialogResult!=null)
-            //{
-            //    //var result = await _dialogResult.Mission.Task;
-            //    return result;
-            //}
-            //else
-            //{
-            //    return null;
-            //}
-            return null;
+
+            ShowDialog();
+            if (_misson != null)
+            {
+                var result = await _misson.Task;
+                return result;
+            }
+            else
+            {
+                return null;
+            }           
         }
 
 
@@ -115,20 +111,15 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         }
 
 
-
-   
-
-        #region 释放资源
-
-
-
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);               
+            DialogView = null;
+            base.Dispose(disposing);
         }
-
-
-        #endregion
 
 
     }

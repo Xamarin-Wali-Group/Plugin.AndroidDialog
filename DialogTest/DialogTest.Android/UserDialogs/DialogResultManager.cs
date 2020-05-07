@@ -33,25 +33,22 @@ namespace DialogTest.Droid.UserDialogs
         {
             return _dialogResult;
         }
-
-
+       
     }
 
 
     public class DialogResult : IDialogResult
     {
         TaskCompletionSource<string> _mission;
-
-
-
+     
         public DialogResult(TaskCompletionSource<string> mission)
         {
             _mission = mission;
         }
 
         public void SetResult(string resultMsg)
-        {
-            _mission.SetResult(resultMsg);
+        {            
+            _mission.TrySetResult(resultMsg);         
         }
     }
 }

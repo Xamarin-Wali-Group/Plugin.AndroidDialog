@@ -83,11 +83,10 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         /// <returns></returns>
         public async Task<string> ShowAsync()
         {
-
             ShowDialog();
             if (_misson != null)
-            {
-                var result = await _misson.Task;
+            {               
+                var result = await _misson.Task;              
                 return result;
             }
             else

@@ -28,7 +28,9 @@ namespace DialogTest
                 BtnMsg="测试按钮信息",
                 Msg="测试信息2"
             });
-            dialog.Show();
+            var result=await dialog.ShowAsync();
+            dialog.Close();
+            factory.Toast("2233");
             //var str=await dialog.ShowAsync()
             //TestDialogView testDialog = new TestDialogView();
             ////打开一个自定义弹窗

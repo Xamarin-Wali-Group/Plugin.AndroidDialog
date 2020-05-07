@@ -72,6 +72,10 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             _dialogMsg = dialogMsg;
             _isLong = isLong;
             _isNative = isNative;
+            if (_toastView==null)
+            {
+                _isNative = true;
+            }
         }
 
         public Toast Builder()
@@ -90,7 +94,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
                 {
                     _nativeToast = Toast.MakeText(_mContext, "", ToastLength.Short);
                 }
-                nowToast = _nativeToast;
+                nowToast = _nativeToast;                 
             }
             else
             {
@@ -126,6 +130,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 toast.SetText(_dialogMsg.Msg);
             }
+            
         }
 
         /// <summary>

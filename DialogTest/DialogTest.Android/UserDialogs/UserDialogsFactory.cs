@@ -76,7 +76,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
                 manager.Build();
                 dialogResult = manager.GetDialogResult();
                 mission = manager.GetResultMission();
-            }
+            }            
             var dialogFragment = new BaseDialogFragment2(_activity, contentView, config, dialogMsg, dialogResult);
             var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager,contentView ,mission);
             return dialogDroid;

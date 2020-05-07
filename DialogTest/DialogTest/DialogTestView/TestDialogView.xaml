@@ -8,8 +8,8 @@
   <ContentView.Content>
         <Frame CornerRadius="25" BackgroundColor="Red" IsClippedToBounds="False">
             <StackLayout>
-                <Button Text="按钮文本" x:Name="btn"></Button>
-                <Label Text="lbl文本" x:Name="lbl"  />
+                <Button Text="按钮文本" x:Name="btn"  Clicked="btn_Clicked"></Button>
+                <Button Text="lbl文本" x:Name="lbl"  Clicked="btn_Clicked2" />
             </StackLayout>
         </Frame>
      

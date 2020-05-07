@@ -73,6 +73,7 @@
     <Compile Include="UserDialogs\CaptureViewHelper.cs" />
     <Compile Include="UserDialogs\DialogBackKeyLister.cs" />
     <Compile Include="UserDialogs\DialogInstance.cs" />
+    <Compile Include="UserDialogs\DialogResultManager.cs" />
     <Compile Include="UserDialogs\DialogShowListener.cs" />
     <Compile Include="UserDialogs\FormViewHelper.cs" />
     <Compile Include="UserDialogs\LoadDialogFragment.cs" />

@@ -47,6 +47,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 config = _dialogsInitize.GetInitDialogConfig(dialogType);
             }
+            DialogResultManager resultManager = new DialogResultManager();
             var dialogFragment = new BaseDialogFragment2(_activity,contentView, config, dialogMsg);
             var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager);
             return dialogDroid;

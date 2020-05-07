@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DialogTest.Dialog;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,8 +9,9 @@ namespace Box.Plugs.Dialog
     /// 当View作为Dialog视图的时候，必须实现此接口
     /// </summary>
     public interface IDialogElement
-    {          
-  
+    {
+        IDialogResult DialogResult { get; set; }
+
         /// <summary>
         /// 对话框元素被构造时调用
         /// </summary>
@@ -31,8 +33,8 @@ namespace Box.Plugs.Dialog
         /// </summary>
         void OnDestory();
 
-    
+
     }
 
-    
+
 }

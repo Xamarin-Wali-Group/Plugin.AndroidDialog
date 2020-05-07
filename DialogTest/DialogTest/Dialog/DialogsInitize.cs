@@ -8,7 +8,7 @@ namespace Box.Plugs.Dialog
     public class DialogsInitize
     {
 
-        private Dictionary<DialogType, Func<View>> _dialogTypeViews;
+        private Dictionary<DialogType, Func<IDialogElement>> _dialogTypeViews;
         private Dictionary<DialogType, DialogConfig> _dialogTypeConfigs;
         private Func<View> _toastViewFunc;
         private DialogType _tempType;
@@ -16,14 +16,14 @@ namespace Box.Plugs.Dialog
 
         private DialogsInitize()
         {
-            _dialogTypeViews = new Dictionary<DialogType, Func<View>>();
+            _dialogTypeViews = new Dictionary<DialogType, Func<IDialogElement>>();
             _dialogTypeConfigs = new Dictionary<DialogType, DialogConfig>();
         }
 
 
 
 
-        public DialogsInitize MapDialogFromContentView(DialogType dialogType, Func<View> viewCreator)
+        public DialogsInitize MapDialogFromContentView(DialogType dialogType, Func<IDialogElement> viewCreator)
         {
             _tempType = dialogType;
             _dialogTypeViews.Add(dialogType, viewCreator);
@@ -56,7 +56,7 @@ namespace Box.Plugs.Dialog
 
         public View GetInitDialogContentView(DialogType dialogType) 
         {
-            return _dialogTypeViews.ContainsKey(dialogType) ? _dialogTypeViews[dialogType].Invoke()
+            return _dialogTypeViews.ContainsKey(dialogType) ? _dialogTypeViews[dialogType].Invoke() as View
                     : null;
         }
 

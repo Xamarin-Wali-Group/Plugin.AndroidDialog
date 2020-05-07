@@ -12,7 +12,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Box.Plugs.Dialog;
-using DialogTest.DialogTestView;
 using UserDialogs;
 using Xamarin.Forms.Platform.Android;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
@@ -60,6 +59,8 @@ namespace DialogTest.Droid.UserDialogs
         protected IDialogMsg _iDialogMsg;
         protected Point _dialogViewSize;
 
+        public bool IsViewDialogElement { get => _dialogElement == null; }
+
         public BaseDialogFragment2(IntPtr a, Android.Runtime.JniHandleOwnership b)
         {
 
@@ -86,7 +87,7 @@ namespace DialogTest.Droid.UserDialogs
         }
 
 
-        public override Dialog OnCreateDialog(Bundle savedInstanceState)
+        public override Android.App.Dialog OnCreateDialog(Bundle savedInstanceState)
         {
             return base.OnCreateDialog(savedInstanceState);
         }
@@ -103,6 +104,10 @@ namespace DialogTest.Droid.UserDialogs
         {
             var dialogView = _contentView.ConvertFormsToNative(_context.ApplicationContext);
             _dialogElement?.OnCreated(_iDialogMsg);
+            if (_dialogElement!=null)
+            {
+                _dialogElement.DialogResult = null;
+            }
             return dialogView;
         }
 
@@ -202,7 +207,7 @@ namespace DialogTest.Droid.UserDialogs
         #endregion
 
         #region 设置Dialog的关闭方式
-        public void SetDialogCloseWays(DialogConfig config, Dialog dialog)
+        public void SetDialogCloseWays(DialogConfig config, Android.App.Dialog dialog)
         {
             if (!config.IsCanCancel)
             {
@@ -216,7 +221,7 @@ namespace DialogTest.Droid.UserDialogs
             }
         }
         #endregion
-       
+
 
         public override void OnStart()
         {
@@ -229,18 +234,23 @@ namespace DialogTest.Droid.UserDialogs
             SetDialogWindowFlags(window, attrs);
             attrs.WindowAnimations = SetDialogAnimation();
             window.Attributes = attrs;
-            SetDialogCloseWays(_dialogConfig,Dialog);
+            SetDialogCloseWays(_dialogConfig, Dialog);
             Dialog.DismissEvent += Dialog_DismissEvent;
 
         }
 
+
+
+        /// <summary>
+        /// dialog关闭后，释放资源，销毁fragment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Dialog_DismissEvent(object sender, EventArgs e)
         {
-            this.DismissAllowingStateLoss();            
+            this.DismissAllowingStateLoss();
             this.FragmentManager.BeginTransaction().Remove(this).Commit();
         }
-
-      
 
 
 
@@ -268,8 +278,8 @@ namespace DialogTest.Droid.UserDialogs
 
         public override void OnDestroy()
         {
-            UnRegisterEvent();           
-            _dialogElement?.OnDestory();            
+            UnRegisterEvent();
+            _dialogElement?.OnDestory();
             base.OnDestroy();
             _contentView = null;
         }

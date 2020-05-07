@@ -1,4 +1,5 @@
 ﻿using Box.Plugs.Dialog;
+using DialogTest.Dialog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DialogTest.DialogTestView
             InitializeComponent();
         }
 
+        public IDialogResult DialogResult { get; set; }
 
         public void OnClosed()
         {
@@ -41,6 +43,16 @@ namespace DialogTest.DialogTestView
         public void OnShowed()
         {
 
+        }
+
+        private void btn_Clicked(object sender, EventArgs e)
+        {
+            DialogResult.SetResult(this.btn.Text);
+        }
+
+        private void btn_Clicked2(object sender, EventArgs e)
+        {
+            DialogResult.SetResult(this.lbl.Text);
         }
     }
 

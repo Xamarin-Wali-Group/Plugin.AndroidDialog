@@ -88,16 +88,16 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         {
             
             OpenDialog();
-            if (_dialogResult!=null)
-            {
-                //var result = await _dialogResult.Mission.Task;
-                return result;
-            }
-            else
-            {
-                return null;
-            }
-           
+            //if (_dialogResult!=null)
+            //{
+            //    //var result = await _dialogResult.Mission.Task;
+            //    return result;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            return null;
         }
 
 

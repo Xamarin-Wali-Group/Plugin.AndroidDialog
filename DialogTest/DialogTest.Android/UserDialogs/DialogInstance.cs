@@ -14,6 +14,7 @@ using DialogFragment = Android.Support.V4.App.DialogFragment;
 using Box.Plugs.Dialog;
 using DialogTest.Droid.UserDialogs;
 using DialogTest.Dialog;
+using Xamarin.Forms;
 
 namespace BoxApp.Droid.DroidRender.UserDialogs
 {
@@ -40,8 +41,8 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
 
 
 
-        public DialogInstance(BaseDialogFragment2 dialogFragment, 
-            FragmentManager fragmentManage, 
+        public DialogInstance(BaseDialogFragment2 dialogFragment,
+            FragmentManager fragmentManage,
             Xamarin.Forms.View dialogView,
             TaskCompletionSource<string> misson = null)
         {
@@ -52,12 +53,18 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         }
 
 
-        public void SetTaskMissonResult(string result)
+        void ReciveMessageToCloseDialog()
         {
-            _misson?.SetResult(result);
-            Close();
+            MessagingCenter.Subscribe<DialogResult>(this, "close", (sender) =>
+            {
+                Close();
+            });
         }
 
+        void UnRegisterMessaging()
+        {
+            MessagingCenter.Unsubscribe<DialogResult>(this, "close");
+        }
 
         void ShowDialog()
         {
@@ -65,6 +72,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             {
                 return;
             }
+            ReciveMessageToCloseDialog();
             _dialogFragment.Show(_fragmentManage, null);
         }
 
@@ -85,14 +93,14 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
         {
             ShowDialog();
             if (_misson != null)
-            {               
-                var result = await _misson.Task;              
+            {
+                var result = await _misson.Task;
                 return result;
             }
             else
             {
                 return null;
-            }           
+            }
         }
 
 
@@ -107,6 +115,7 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
                 return;
             }
             _dialogFragment.Dismiss();
+            UnRegisterMessaging();
         }
 
 

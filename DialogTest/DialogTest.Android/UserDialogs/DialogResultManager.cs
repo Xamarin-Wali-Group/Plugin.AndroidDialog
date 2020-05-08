@@ -46,9 +46,24 @@ namespace DialogTest.Droid.UserDialogs
             _mission = mission;
         }
 
+       
+
+        private void MessagingToCloseDialog()
+        {
+            Xamarin.Forms.MessagingCenter.Send<DialogResult>(this, "close");
+        }
+
+        public void CloseDialog()
+        {
+            MessagingToCloseDialog();
+        }
+
         public void SetResult(string resultMsg)
-        {            
-            _mission.TrySetResult(resultMsg);         
+        {                        
+            if (_mission.TrySetResult(resultMsg))
+            {
+                MessagingToCloseDialog();
+            }
         }
     }
 }

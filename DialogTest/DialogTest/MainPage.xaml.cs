@@ -26,10 +26,10 @@ namespace DialogTest
             var dialog=factory.CreateDialog(DialogType.Confirm, new TestDilaogMsg() 
             {
                 BtnMsg="测试按钮信息",
-                Msg="测试信息2"
+                Msg=null
             });
             var result=await dialog.ShowAsync();
-            dialog.Close();
+            //dialog.Close();
             factory.Toast("2233");            
         }
     }

@@ -8,6 +8,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Plugin.PopUpDialog.Shared;
@@ -39,7 +40,7 @@ namespace Plugin.PopUpDialog.Android
             {
                 if (_density == 0)
                 {
-                    var dm = new Android.Util.DisplayMetrics();
+                    var dm = new DisplayMetrics();
                     _mContext.WindowManager.DefaultDisplay.GetMetrics(dm);
                     _density = dm.Density;
                 }

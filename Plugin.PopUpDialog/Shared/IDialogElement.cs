@@ -1,4 +1,4 @@
-﻿using DialogTest.Dialog;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +21,7 @@ namespace Plugin.PopUpDialog.Shared
         /// <summary>
         /// dialog show后调用
         /// </summary>
-        void OnShowed();
+        void OnShowed(); 
 
         /// <summary>
         /// dialog被关闭后调用

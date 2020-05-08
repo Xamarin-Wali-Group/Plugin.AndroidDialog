@@ -20,7 +20,7 @@ namespace Box.Plugs.Dialog
         public Color BackgroundColor { get; set; } = Color.Transparent;
 
         /// <summary>
-        /// 触碰Mask是否能关闭dialog，默认为true
+        /// 触碰遮罩层是否能关闭dialog，默认为true
         /// </summary>
         public bool IsCloseByTouchMask { get; set; } = true;
 
@@ -28,9 +28,9 @@ namespace Box.Plugs.Dialog
         /// 是否能被返回键和触摸mask的方式关闭，默认为true
         /// </summary>
         public bool IsCanCancel { get; set; } = true;
-       
+
         /// <summary>
-        /// 默认为false，若为true，则Mask会消失，则不再拦截Mask的touch事件。       
+        /// 默认为false，若为true，则不渲染遮罩层，如此也就不会再拦截遮罩层的touch事件。       
         /// </summary>
         public bool NotTouchModal { get; set; }
 
@@ -44,10 +44,11 @@ namespace Box.Plugs.Dialog
         /// </summary>
         public float YOffset { get; set; }
 
-        public DialogConfig()
-        {
-
-        }
+        /// <summary>
+        /// 对话框动画效果，可在对应平台xml中编写 
+        /// 安卓参考：Dialog_popup Dialog_fade Dialog_slide_top Dialog_slide_bottom Dialog_tooltip Dialog_grow_fade
+        /// </summary>
+        public string DialogAnimationConfig { get; set; } = "Dialog_slide_bottom";
     }
 
     public enum DialogPosition

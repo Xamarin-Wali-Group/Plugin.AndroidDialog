@@ -61,7 +61,7 @@ namespace DialogTest.Droid.UserDialogs
         protected IDialogMsg _iDialogMsg;
         protected Point _dialogViewSize;
         protected IDialogResult _dialogResult;
-        
+
 
         public BaseDialogFragment2(IntPtr a, Android.Runtime.JniHandleOwnership b)
         {
@@ -69,7 +69,7 @@ namespace DialogTest.Droid.UserDialogs
         }
 
         public BaseDialogFragment2(Activity activity, Xamarin.Forms.View contentView,
-         DialogConfig dialogConfig, IDialogMsg dialogMsg, IDialogResult dialogResult=null)
+         DialogConfig dialogConfig, IDialogMsg dialogMsg, IDialogResult dialogResult = null)
         {
             _context = activity;
             _dialogConfig = dialogConfig;
@@ -79,7 +79,7 @@ namespace DialogTest.Droid.UserDialogs
             _dialogResult = dialogResult;
             if (contentView is IDialogElement dialogElement)
             {
-                _dialogElement = contentView as IDialogElement;                
+                _dialogElement = contentView as IDialogElement;
             }
         }
 
@@ -92,7 +92,9 @@ namespace DialogTest.Droid.UserDialogs
 
         public override Android.App.Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            return base.OnCreateDialog(savedInstanceState);
+            var dialog =base.OnCreateDialog(savedInstanceState);
+            SetDialogWindowBGDrawable(dialog.Window);
+            return dialog;
         }
 
 
@@ -107,7 +109,7 @@ namespace DialogTest.Droid.UserDialogs
         {
             var dialogView = _contentView.ConvertFormsToNative(_context.ApplicationContext);
             _dialogElement?.OnCreated(_iDialogMsg);
-            if (_dialogElement!=null)
+            if (_dialogElement != null)
             {
                 _dialogElement.DialogResult = _dialogResult;
             }
@@ -177,33 +179,11 @@ namespace DialogTest.Droid.UserDialogs
         /// 设置弹出动画
         /// </summary>
         /// <returns></returns>
-        protected virtual int SetDialogAnimation()
+        protected virtual void SetDialogAnimation(WindowManagerLayoutParams attrs)
         {
-            int dialogAnimateResource = -1;
-            switch (_dialogConfig.DialogAnimation)
-            {
-                case DialogAnimation.PopupIn_PopupOut:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_popup;
-                    break;
-                case DialogAnimation.FadeIn_FadeOut:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_fade;
-                    break;
-                case DialogAnimation.SlideInTop_SlideOutTop:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_slide_top;
-                    break;
-                case DialogAnimation.SlideInButton_SlideOutButton:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_slide_bottom;
-                    break;
-                case DialogAnimation.Tooltip:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_tooltip;
-                    break;
-                case DialogAnimation.Grow_fade_in_Shrink_Fadeout:
-                    dialogAnimateResource = DialogTest.Droid.Resource.Style.Dialog_grow_fade;
-                    break;
-                default:
-                    break;
-            }
-            return dialogAnimateResource;
+            var dialogAnimateResId = this._context.Resources.GetIdentifier(_dialogConfig.DialogAnimationConfig, "style",
+                _context.PackageName);
+            attrs.WindowAnimations = dialogAnimateResId;
         }
 
 
@@ -232,20 +212,19 @@ namespace DialogTest.Droid.UserDialogs
             var window = Dialog.Window;
             var attrs = window.Attributes;
             SetDialogWindowSize(attrs);
-            SetDialogWindowPosition(attrs);
-            SetDialogWindowBGDrawable(window);
+            SetDialogWindowPosition(attrs);            
             SetDialogWindowFlags(window, attrs);
-            attrs.WindowAnimations = SetDialogAnimation();
+            SetDialogAnimation(attrs);
             window.Attributes = attrs;
             SetDialogCloseWays(_dialogConfig, Dialog);
-            if (_dialogElement!=null)
+            if (_dialogElement != null)
             {
                 Dialog.DismissEvent += DialogDismiss_ElementClose;
             }
-            Dialog.DismissEvent += DialogDismiss_DisposeFragment;            
+            Dialog.DismissEvent += DialogDismiss_DisposeFragment;
         }
 
-        void DialogDismiss_ElementClose(object sender, EventArgs e) 
+        void DialogDismiss_ElementClose(object sender, EventArgs e)
         {
             _dialogElement.OnClosed();
         }
@@ -255,7 +234,7 @@ namespace DialogTest.Droid.UserDialogs
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-         void DialogDismiss_DisposeFragment(object sender, EventArgs e)
+        void DialogDismiss_DisposeFragment(object sender, EventArgs e)
         {
             this.DismissAllowingStateLoss();
             this.FragmentManager.BeginTransaction().Remove(this).Commit();
@@ -271,7 +250,7 @@ namespace DialogTest.Droid.UserDialogs
             if (Dialog != null)
             {
                 try
-                {                    
+                {
                     Dialog.SetOnKeyListener(null);
                     Dialog.SetOnShowListener(null);
                     Dialog.SetOnDismissListener(null);
@@ -286,10 +265,10 @@ namespace DialogTest.Droid.UserDialogs
 
 
         public override void OnDestroy()
-        {            
+        {
             _dialogElement?.OnDestory();
-            UnRegisterEvent();            
-            base.OnDestroy();            
+            UnRegisterEvent();
+            base.OnDestroy();
         }
 
 

@@ -2,35 +2,33 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Plugin.PopUpDialog.Shared
 {
-    public interface IDialog : IDisposable
-    {
+    public interface IDialog:IDisposable
+    {      
+       
+        Xamarin.Forms.View DialogView { get;  }
+
         /// <summary>
-        /// 对话框关闭事件
+        /// 打开对话框
         /// </summary>
-        event Action DialogDismissEvent;
-
-        /// <summary>
-        /// 对话框取消事件
-        /// </summary>
-        event Action DialogCancelEvent;
-
-        View ContentView { get; }
-
-        /// <summary>
-        /// Dialog出现事件
-        /// </summary> 
-        event Action DialogShowEvent;
-
         void Show();
+
+        /// <summary>
+        /// 打开对话框，同时启动可等待任务，等待用户的响应        
+        /// </summary>
+        /// <returns></returns>
 
         Task<string> ShowAsync();
 
+        /// <summary>
+        /// 关闭对话框
+        /// </summary>
         void Close();
 
-
+    
     }
+
+   
 }

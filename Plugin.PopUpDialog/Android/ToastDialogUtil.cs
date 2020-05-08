@@ -10,11 +10,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Box.Plugs.Dialog;
-using UserDialogs;
+using Plugin.PopUpDialog.Shared;
 
-
-namespace BoxApp.Droid.DroidRender.UserDialogs
+namespace Plugin.PopUpDialog.Android
 {
     public class ToastDialogUtil
     {

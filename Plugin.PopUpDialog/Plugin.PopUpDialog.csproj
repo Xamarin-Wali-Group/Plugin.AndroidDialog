@@ -99,16 +99,7 @@
 
 
 
-	<ItemGroup>
-	  <None Remove="Shared\DialogConfig.cs" />
-	</ItemGroup>
-
-
-
-
-
-
-
+	
 
 
 	

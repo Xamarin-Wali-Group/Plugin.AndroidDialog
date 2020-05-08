@@ -11,200 +11,123 @@ using Android.Views;
 using Android.Widget;
 using FragmentManager = Android.Support.V4.App.FragmentManager;
 using DialogFragment = Android.Support.V4.App.DialogFragment;
+using Xamarin.Forms;
+using Plugin.PopUpDialog.Shared;
+
 namespace Plugin.PopUpDialog.Android
 {
-    #region MyRegion
-    //public class DialogInstance : Java.Lang.Object, Shared.IDialog, IDialogInterfaceOnShowListener,
-    //    IDialogInterfaceOnDismissListener, IDialogInterfaceOnCancelListener
-    //{
-    //    private BaseDialogFragment _dialogFragment;
-    //    private FragmentManager _fragmentManage;
-    //    private TaskCompletionSource<string> _mission;
-    //    private string _dialogTag = "lwyDialog";
-    //    private static ulong _tagId = 0;
-
-    //    public event Action DialogShowEvent;
-
-    //    public Xamarin.Forms.View ContentView { get;private set; }
-
-    //    /// <summary>
-    //    /// 对话框关闭事件
-    //    /// </summary>
-    //    public event Action DialogDismissEvent;
-
-    //    /// <summary>
-    //    /// 对话框取消事件
-    //    /// </summary>
-    //    public event Action DialogCancelEvent;
-
-
-    //    /// <summary>
-    //    /// 增加此构造，解决unable to activate instance of type 。。。
-    //    /// </summary>
-    //    /// <param name="a"></param>
-    //    /// <param name="b"></param>
-    //    public DialogInstance(IntPtr a, JniHandleOwnership b) : base(a, b)
-    //    {
-    //    }
-
-    //    public DialogInstance(BaseDialogFragment dialogFragment, FragmentManager fragmentManage,
-    //        Xamarin.Forms.View view)
-    //    {
-    //        this._dialogFragment = dialogFragment;
-    //        this._fragmentManage = fragmentManage;          
-    //        this.DialogDismissEvent += DestoryHasExistDialog;
-    //        this.ContentView = view;
-    //    }
+    public class DialogInstance : Java.Lang.Object, IDialog
+    {
+        private BaseDialogFragment2 _dialogFragment;
+        private FragmentManager _fragmentManage;
+        private TaskCompletionSource<string> _misson;
 
 
 
-    //    public void SetTaskMissonResult(string result)
-    //    {
-    //        _mission.SetResult(result);
-    //        Close();
-    //    }
+
+        public Xamarin.Forms.View DialogView { get; private set; }
 
 
-    //    /// <summary>
-    //    /// 为dialog添加回调事件,最后打开对话框
-    //    /// </summary>
-    //    void OpenDialogAddListener()
-    //    {
-    //        if (_dialogFragment.IsAdded)
-    //        {
-    //            return;
-    //        }
-    //        /*
-    //         注入事件
-    //         */
-    //        InitDialogShowEvent();
-    //        InitDialogDismissEvent();
-    //        InitDialogCancelEvent();
-    //        InitDialogNativeClicked();
-
-    //        _dialogFragment.Show(_fragmentManage, null);
-    //    }
-
-
-    //    /// <summary>
-    //    /// 打开Dialog
-    //    /// </summary>
-    //    public void Show()
-    //    {
-    //        OpenDialogAddListener();
-    //    }
-
-
-    //    /// <summary>
-    //    /// 打开Dialog,异步等待结果
-    //    /// </summary>
-    //    /// <returns></returns>
-    //    public async Task<string> ShowAsync()
-    //    {
-    //        _mission = new TaskCompletionSource<String>();
-    //        OpenDialogAddListener();
-    //        var result = await _mission.Task;
-    //        return result;
-    //    }
+        /// <summary>
+        /// 增加此构造，解决unable to activate instance of type 。。。
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        public DialogInstance(IntPtr a, JniHandleOwnership b) : base(a, b)
+        {
+        }
 
 
 
-    //    /// <summary>
-    //    /// 关闭Dialog
-    //    /// </summary>
-    //    public void Close()
-    //    {
-    //        if (_dialogFragment.IsHidden)
-    //        {
-    //            return;
-    //        }
-    //        _dialogFragment.Dismiss();
-    //    }
+        public DialogInstance(BaseDialogFragment2 dialogFragment,
+            FragmentManager fragmentManage,
+            Xamarin.Forms.View dialogView,
+            TaskCompletionSource<string> misson = null)
+        {
+            this._dialogFragment = dialogFragment;
+            this._fragmentManage = fragmentManage;
+            this._misson = misson;
+            this.DialogView = dialogView;
+        }
+
+
+        void ReciveMessageToCloseDialog()
+        {
+            MessagingCenter.Subscribe<DialogResult>(this, "close", (sender) =>
+            {
+                Close();
+            });
+        }
+
+        void UnRegisterMessaging()
+        {
+            MessagingCenter.Unsubscribe<DialogResult>(this, "close");
+        }
+
+        void ShowDialog()
+        {
+            if (_dialogFragment.IsAdded)
+            {
+                return;
+            }
+            ReciveMessageToCloseDialog();
+            _dialogFragment.Show(_fragmentManage, null);
+        }
+
+        /// <summary>
+        /// 打开Dialog
+        /// </summary>
+        public void Show()
+        {
+            ShowDialog();
+        }
+
+
+        /// <summary>
+        /// 打开Dialog,异步等待结果
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> ShowAsync()
+        {
+            ShowDialog();
+            if (_misson != null)
+            {
+                var result = await _misson.Task;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
 
 
-    //    #region 注入事件
-    //    void InitDialogShowEvent()
-    //    {
-    //        _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-    //        {
-    //            dialog.SetOnShowListener(this);
-    //        };
-    //    }
-
-    //    void InitDialogDismissEvent()
-    //    {
-    //        _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-    //        {
-    //            dialog.SetOnDismissListener(this);
-    //        };
-    //    }
-
-    //    void InitDialogCancelEvent()
-    //    {
-    //        _dialogFragment.OnActivityCreatedEvent += (dialog) =>
-    //        {
-    //            dialog.SetOnCancelListener(this);
-    //        };
-    //    }
-
-    //    void InitDialogNativeClicked()
-    //    {
-    //        //if (_dialogFragment.IsNative)
-    //        //{
-    //        //    Xamarin.Forms.MessagingCenter.Subscribe<NativeDialogBtnClickListener, string>
-    //        //     (this, BaseDialogFragment.MessagingCenter_Tag, (sender, result) =>
-    //        //     {
-    //        //         SetTaskMissonResult(result);
-    //        //         Xamarin.Forms.MessagingCenter.Unsubscribe<NativeDialogBtnClickListener, string>(this,
-    //        //             BaseDialogFragment.MessagingCenter_Tag);
-    //        //     });
-    //        //}
-    //    }
-
-    //    public void OnShow(IDialogInterface dialog)
-    //    {
-    //        DialogShowEvent?.Invoke();
-    //    }
-
-    //    public void OnDismiss(IDialogInterface dialog)
-    //    {
-    //        DialogDismissEvent?.Invoke();
-    //    }
-
-    //    public void OnCancel(IDialogInterface dialog)
-    //    {
-
-    //        DialogCancelEvent?.Invoke();
-    //    }
+        /// <summary>
+        /// 关闭Dialog
+        /// </summary>
+        public void Close()
+        {
+            if (_dialogFragment.IsHidden)
+            {
+                return;
+            }
+            _dialogFragment.Dismiss();
+            UnRegisterMessaging();
+        }
 
 
-    //    #endregion
-
-    //    #region  关闭已经打开的Dialog,消除缓存
-    //    /// <summary>
-    //    /// 关闭已经打开的Dialog,消除缓存,同时
-    //    /// </summary>
-    //    void DestoryHasExistDialog()
-    //    {
-    //        _dialogFragment.DismissAllowingStateLoss();
-    //        _fragmentManage.BeginTransaction().Remove(_dialogFragment);
-    //    }
-    //    #endregion
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            DialogView = null;
+            base.Dispose(disposing);
+        }
 
 
-    //    #region 释放资源
+    }
 
-    //    protected override void Dispose(bool disposing)
-    //    {
-    //        base.Dispose(disposing);
-    //        DestoryHasExistDialog();
-    //        _mission = null;
-    //    }
-
-    //    #endregion
-
-
-    //} 
-    #endregion
 }

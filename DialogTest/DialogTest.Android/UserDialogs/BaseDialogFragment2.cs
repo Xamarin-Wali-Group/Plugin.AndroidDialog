@@ -11,6 +11,7 @@ using Android.Media.TV;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Util;
 using Android.Widget;
 using Box.Plugs.Dialog;
 using DialogTest.Dialog;
@@ -59,11 +60,11 @@ namespace DialogTest.Droid.UserDialogs
         protected DialogConfig _dialogConfig;
         protected IDialogElement _dialogElement;
         protected IDialogMsg _iDialogMsg;
-        protected Point _dialogViewSize;
+        protected Size _dialogViewSize;
         protected IDialogResult _dialogResult;
 
 
-        public BaseDialogFragment2(IntPtr a, Android.Runtime.JniHandleOwnership b)
+        public BaseDialogFragment2(IntPtr a, JniHandleOwnership b)
         {
 
         }
@@ -75,7 +76,6 @@ namespace DialogTest.Droid.UserDialogs
             _dialogConfig = dialogConfig;
             _iDialogMsg = dialogMsg;
             _contentView = contentView;
-            _dialogViewSize = new Point();
             _dialogResult = dialogResult;
             if (contentView is IDialogElement dialogElement)
             {
@@ -89,14 +89,38 @@ namespace DialogTest.Droid.UserDialogs
             UnRegisterEvent();
         }
 
+        #region 为Dialog绑定DialogElement的事件
+        protected virtual void RegisterDialogElementEvent(Android.App.Dialog dialog)
+        {
+            if (_dialogElement != null)
+            {
+                dialog.ShowEvent += Dialog_ShowEvent;
+                dialog.DismissEvent += DialogDismiss_ElementClose;
+            }
+            dialog.DismissEvent += DialogDismiss_DisposeFragment;
+        }
+
+        protected virtual void Dialog_ShowEvent(object sender, EventArgs e)
+        {
+            _dialogElement.OnShowed();
+        }
+
+        protected virtual void DialogDismiss_ElementClose(object sender, EventArgs e)
+        {
+            _dialogElement.OnClosed();
+        }
+
+        #endregion
+
 
         public override Android.App.Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            var dialog =base.OnCreateDialog(savedInstanceState);
+            var dialog = base.OnCreateDialog(savedInstanceState);
             SetDialogWindowBGDrawable(dialog.Window);
+
+            SetDialogCloseWays(_dialogConfig, dialog);
             return dialog;
         }
-
 
         /// <summary>
         /// 构造XF中对应的ContentView
@@ -125,10 +149,11 @@ namespace DialogTest.Droid.UserDialogs
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            var size = _contentView.Measure(WindowSize.X / this.Density, WindowSize.Y / this.Density).Request;
+            var size = _contentView.Measure(WindowSize.X / Density, WindowSize.Y / Density).Request;
+
             _contentView.Layout(new Xamarin.Forms.Rectangle(0, 0, size.Width, size.Height));
-            _dialogViewSize.X = (int)Math.Ceiling(size.Width * Density);
-            _dialogViewSize.Y = (int)Math.Ceiling(size.Height * Density);
+            _dialogViewSize = new Size((int)Math.Ceiling(size.Width * Density)
+                , (int)Math.Ceiling(size.Height * Density));
         }
 
 
@@ -150,8 +175,9 @@ namespace DialogTest.Droid.UserDialogs
 
         void SetDialogWindowSize(WindowManagerLayoutParams attrs)
         {
-            attrs.Width = this._dialogViewSize.X;
-            attrs.Height = this._dialogViewSize.Y;
+
+            attrs.Width = this._dialogViewSize.Width;
+            attrs.Height = this._dialogViewSize.Height;
         }
 
         void SetDialogWindowFlags(Window window, WindowManagerLayoutParams attrs)
@@ -212,22 +238,14 @@ namespace DialogTest.Droid.UserDialogs
             var window = Dialog.Window;
             var attrs = window.Attributes;
             SetDialogWindowSize(attrs);
-            SetDialogWindowPosition(attrs);            
+            SetDialogWindowPosition(attrs);
             SetDialogWindowFlags(window, attrs);
             SetDialogAnimation(attrs);
+            RegisterDialogElementEvent(Dialog);
             window.Attributes = attrs;
-            SetDialogCloseWays(_dialogConfig, Dialog);
-            if (_dialogElement != null)
-            {
-                Dialog.DismissEvent += DialogDismiss_ElementClose;
-            }
-            Dialog.DismissEvent += DialogDismiss_DisposeFragment;
         }
 
-        void DialogDismiss_ElementClose(object sender, EventArgs e)
-        {
-            _dialogElement.OnClosed();
-        }
+
 
         /// <summary>
         /// dialog关闭后，释放资源，销毁fragment
@@ -251,6 +269,12 @@ namespace DialogTest.Droid.UserDialogs
             {
                 try
                 {
+                    if (_dialogElement != null)
+                    {
+                        Dialog.ShowEvent -= Dialog_ShowEvent;
+                        Dialog.DismissEvent -= DialogDismiss_ElementClose;
+                        Dialog.DismissEvent -= DialogDismiss_DisposeFragment;
+                    }
                     Dialog.SetOnKeyListener(null);
                     Dialog.SetOnShowListener(null);
                     Dialog.SetOnDismissListener(null);

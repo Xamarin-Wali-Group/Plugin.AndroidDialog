@@ -58,7 +58,7 @@ namespace Plugin.PopUpDialog.Android
         protected DialogConfig _dialogConfig;
         protected IDialogElement _dialogElement;
         protected IDialogMsg _iDialogMsg;
-        protected Point _dialogViewSize;
+        protected Size _dialogViewSize;
         protected IDialogResult _dialogResult;
 
 
@@ -74,7 +74,6 @@ namespace Plugin.PopUpDialog.Android
             _dialogConfig = dialogConfig;
             _iDialogMsg = dialogMsg;
             _contentView = contentView;
-            _dialogViewSize = new Point();
             _dialogResult = dialogResult;
             if (contentView is IDialogElement dialogElement)
             {
@@ -88,14 +87,38 @@ namespace Plugin.PopUpDialog.Android
             UnRegisterEvent();
         }
 
+        #region 为Dialog绑定DialogElement的事件
+        protected virtual void RegisterDialogElementEvent(Dialog dialog)
+        {
+            if (_dialogElement != null)
+            {
+                dialog.ShowEvent += Dialog_ShowEvent;
+                dialog.DismissEvent += DialogDismiss_ElementClose;
+            }
+            dialog.DismissEvent += DialogDismiss_DisposeFragment;
+        }
+
+        protected virtual void Dialog_ShowEvent(object sender, EventArgs e)
+        {
+            _dialogElement.OnShowed();
+        }
+
+        protected virtual void DialogDismiss_ElementClose(object sender, EventArgs e)
+        {
+            _dialogElement.OnClosed();
+        }
+
+        #endregion
+
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            var dialog =base.OnCreateDialog(savedInstanceState);
+            var dialog = base.OnCreateDialog(savedInstanceState);
             SetDialogWindowBGDrawable(dialog.Window);
+
+            SetDialogCloseWays(_dialogConfig, dialog);
             return dialog;
         }
-
 
         /// <summary>
         /// 构造XF中对应的ContentView
@@ -124,10 +147,11 @@ namespace Plugin.PopUpDialog.Android
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            var size = _contentView.Measure(WindowSize.X / this.Density, WindowSize.Y / this.Density).Request;
+            var size = _contentView.Measure(WindowSize.X / Density, WindowSize.Y / Density).Request;
+
             _contentView.Layout(new Xamarin.Forms.Rectangle(0, 0, size.Width, size.Height));
-            _dialogViewSize.X = (int)Math.Ceiling(size.Width * Density);
-            _dialogViewSize.Y = (int)Math.Ceiling(size.Height * Density);
+            _dialogViewSize = new Size((int)Math.Ceiling(size.Width * Density)
+                , (int)Math.Ceiling(size.Height * Density));
         }
 
 
@@ -149,8 +173,9 @@ namespace Plugin.PopUpDialog.Android
 
         void SetDialogWindowSize(WindowManagerLayoutParams attrs)
         {
-            attrs.Width = this._dialogViewSize.X;
-            attrs.Height = this._dialogViewSize.Y;
+
+            attrs.Width = this._dialogViewSize.Width;
+            attrs.Height = this._dialogViewSize.Height;
         }
 
         void SetDialogWindowFlags(Window window, WindowManagerLayoutParams attrs)
@@ -206,27 +231,19 @@ namespace Plugin.PopUpDialog.Android
 
 
         public override void OnStart()
-        {           
+        {
             base.OnStart();
             var window = Dialog.Window;
             var attrs = window.Attributes;
             SetDialogWindowSize(attrs);
-            SetDialogWindowPosition(attrs);            
+            SetDialogWindowPosition(attrs);
             SetDialogWindowFlags(window, attrs);
             SetDialogAnimation(attrs);
+            RegisterDialogElementEvent(Dialog);
             window.Attributes = attrs;
-            SetDialogCloseWays(_dialogConfig, Dialog);
-            if (_dialogElement != null)
-            {
-                Dialog.DismissEvent += DialogDismiss_ElementClose;
-            }
-            Dialog.DismissEvent += DialogDismiss_DisposeFragment;
         }
 
-        void DialogDismiss_ElementClose(object sender, EventArgs e)
-        {
-            _dialogElement.OnClosed();
-        }
+
 
         /// <summary>
         /// dialog关闭后，释放资源，销毁fragment
@@ -250,6 +267,12 @@ namespace Plugin.PopUpDialog.Android
             {
                 try
                 {
+                    if (_dialogElement != null)
+                    {
+                        Dialog.ShowEvent -= Dialog_ShowEvent;
+                        Dialog.DismissEvent -= DialogDismiss_ElementClose;
+                        Dialog.DismissEvent -= DialogDismiss_DisposeFragment;
+                    }
                     Dialog.SetOnKeyListener(null);
                     Dialog.SetOnShowListener(null);
                     Dialog.SetOnDismissListener(null);

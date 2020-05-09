@@ -21,18 +21,13 @@ namespace DialogTest.DialogTestView
 
         public IDialogResult DialogResult { get; set; }
 
-        public void OnClosed()
-        {
-
-        }
-
-
-
         public void OnCreated(IDialogMsg dialogMsg)
         {
-            var dMsg = dialogMsg as TestDilaogMsg;
-            this.btn.Text = dMsg.BtnMsg;
-            this.lbl.Text = dMsg.Msg;
+
+            var confirmMsg = dialogMsg as ConfirmMsg;
+            this.msg.Text = dialogMsg.Msg;
+            this.noBtn.Text = confirmMsg.NoBtn;
+            this.okBtn.Text = confirmMsg.OkBtn;
         }
 
         public void OnDestory()
@@ -42,25 +37,33 @@ namespace DialogTest.DialogTestView
 
         public void OnShowed()
         {
-
+            Console.WriteLine();
         }
 
-        private void btn_Clicked(object sender, EventArgs e)
+        private void Cliked_Btn(object sender, EventArgs e)
         {
-            DialogResult.SetResult(this.btn.Text);
+            this.DialogResult.SetResult(((Label)sender).Text);
         }
 
-        private void btn_Clicked2(object sender, EventArgs e)
+        protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
         {
-            DialogResult.SetResult(this.lbl.Text);
+            return base.OnMeasure(widthConstraint * .7, heightConstraint);
+        }
+
+        public void OnClosed()
+        {
+            var a = this.Width;
+            var b = this.boxTest.Width;
         }
     }
 
-    public class TestDilaogMsg : IDialogMsg
+    public class ConfirmMsg : IDialogMsg
     {
         public string Msg { get; set; }
 
-        public string BtnMsg { get; set; }
+        public string OkBtn { get; set; } = "是";
+
+        public string NoBtn { get; set; } = "否";
     }
 
 }

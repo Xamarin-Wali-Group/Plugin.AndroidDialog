@@ -22,15 +22,17 @@ namespace DialogTest
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            var factory=DependencyService.Get<IUserDialogsFactory>();
-            var dialog=factory.CreateDialog(DialogType.Confirm, new TestDilaogMsg() 
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            var dialog = dialogFac.CreateDialog(DialogType.Confirm, new ConfirmMsg()
             {
-                BtnMsg="测试按钮信息",
-                Msg=null
+                Msg = "确定要这么做啊？如果你这么做，那么将会发生我也不知道的事情",
             });
-            var result=await dialog.ShowAsync();
-            //dialog.Close();
-            factory.Toast("2233");            
+            var result = await dialog.ShowAsync();
+            if (result == "是")
+            {
+
+            }
+            dialogFac.Toast("2233");            
         }
     }
 }

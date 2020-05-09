@@ -6,12 +6,36 @@
              mc:Ignorable="d"
              x:Class="DialogTest.DialogTestView.TestDialogView">
   <ContentView.Content>
-        <Frame CornerRadius="25" BackgroundColor="Red" IsClippedToBounds="False">
-            <StackLayout>
-                <Button Text="按钮文本" x:Name="btn"  Clicked="btn_Clicked"></Button>
-                <Button Text="lbl文本" x:Name="lbl"  Clicked="btn_Clicked2" />
+        <Frame CornerRadius="11" BorderColor="#ffffff"  Padding="0"  IsClippedToBounds="False">
+            <StackLayout Spacing="0" IsClippedToBounds="True">
+                <Label x:Name="msg" VerticalTextAlignment="Center" Margin="20,25" FontSize="Medium" TextColor="Black" ></Label>
+                <BoxView HeightRequest="1" x:Name="boxTest" HorizontalOptions="FillAndExpand" BackgroundColor="#EEEEEE"></BoxView>
+                <Grid RowSpacing="0" ColumnSpacing="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width=".5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="okBtn" TextColor="#0B0B0B" FontSize="Medium" Grid.Row="0" Grid.Column="0"
+                               VerticalTextAlignment="Center" HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Cliked_Btn"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <BoxView BackgroundColor="#EEEEEE" WidthRequest="1" Grid.Row="0" Grid.Column="1"></BoxView>
+                    <Label x:Name="noBtn" FontSize="Medium" TextColor="#F50209" Grid.Row="0" Grid.Column="2" 
+                           VerticalTextAlignment="Center" HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Cliked_Btn"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
             </StackLayout>
         </Frame>
-     
-  </ContentView.Content>
+
+    </ContentView.Content>
 </ContentView>

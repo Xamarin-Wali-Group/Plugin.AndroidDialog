@@ -14,7 +14,10 @@ namespace DialogTest
             dialogsServer.MapDialogFromContentView(DialogType.Confirm,
                 () => new DialogTestView.TestDialogView()
                  )
-                .MapDialogConfig(new DialogConfig() );
+                .MapDialogConfig(new DialogConfig()
+                {
+                    IsCloseByTouchMask = false
+                });
 
 
             MainPage = new MainPage();

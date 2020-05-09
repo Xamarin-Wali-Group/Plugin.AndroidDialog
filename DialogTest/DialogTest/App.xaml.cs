@@ -1,4 +1,5 @@
 ﻿using Box.Plugs.Dialog;
+using DialogTest.DialogTestView;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,6 +19,10 @@ namespace DialogTest
                 {
                     IsCloseByTouchMask = false
                 });
+            dialogsServer.InitToast(() => 
+            {
+                return new ToastView();
+            });
 
 
             MainPage = new MainPage();

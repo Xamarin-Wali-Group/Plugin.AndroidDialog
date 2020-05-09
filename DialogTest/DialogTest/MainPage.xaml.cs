@@ -34,5 +34,11 @@ namespace DialogTest
             }
             dialogFac.Toast("2233");            
         }
+
+        private void Btn_Toast(object sender, EventArgs e)
+        {
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            dialogFac.Toast("34444");
+        }
     }
 }

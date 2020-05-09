@@ -255,7 +255,7 @@ namespace DialogTest.Droid.UserDialogs
         void DialogDismiss_DisposeFragment(object sender, EventArgs e)
         {
             this.DismissAllowingStateLoss();
-            this.FragmentManager.BeginTransaction().Remove(this).Commit();
+            FragmentManager?.BeginTransaction().Remove(this).Commit();
         }
 
 

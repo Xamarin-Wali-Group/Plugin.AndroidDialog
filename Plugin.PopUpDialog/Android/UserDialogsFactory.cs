@@ -16,7 +16,7 @@ using Xamarin.Forms.Platform.Android;
 
 using FragmentManager = Android.Support.V4.App.FragmentManager;
 
-[assembly: Dependency(typeof(IUserDialogsFactory))]
+[assembly: Dependency(typeof(Plugin.PopUpDialog.Android.UserDialogsFactory))]
 namespace Plugin.PopUpDialog.Android
 {
     public class UserDialogsFactory : IUserDialogsFactory

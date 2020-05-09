@@ -253,7 +253,7 @@ namespace Plugin.PopUpDialog.Android
         void DialogDismiss_DisposeFragment(object sender, EventArgs e)
         {
             this.DismissAllowingStateLoss();
-            this.FragmentManager.BeginTransaction().Remove(this).Commit();
+            this.FragmentManager?.BeginTransaction().Remove(this).Commit();
         }
 
 

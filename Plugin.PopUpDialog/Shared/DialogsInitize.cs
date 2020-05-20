@@ -11,7 +11,7 @@ namespace Plugin.PopUpDialog.Shared
         private Dictionary<DialogType, Func<IDialogElement>> _dialogTypeViews;
         private Dictionary<DialogType, DialogConfig> _dialogTypeConfigs;
         private Func<View> _toastViewFunc;
-        private DialogType _tempType;
+        private DialogType? _tempType;
         private static DialogsInitize DialogsServerInstance;
 
         private DialogsInitize()
@@ -35,8 +35,12 @@ namespace Plugin.PopUpDialog.Shared
         }
 
         public DialogsInitize MapDialogConfig(DialogConfig defaultDialogConfig)
-        {           
-            _dialogTypeConfigs.Add(_tempType, defaultDialogConfig);
+        {
+            if (!_tempType.HasValue)
+            {
+                return this;
+            }
+            _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
             return this;
         }
 

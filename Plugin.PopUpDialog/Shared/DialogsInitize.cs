@@ -25,13 +25,17 @@ namespace Plugin.PopUpDialog.Shared
 
         public DialogsInitize MapDialogFromContentView(DialogType dialogType, Func<IDialogElement> viewCreator)
         {
+            if (_dialogTypeViews.ContainsKey(dialogType))
+            {
+                return this;
+            }
             _tempType = dialogType;
             _dialogTypeViews.Add(dialogType, viewCreator);
             return this;
         }
 
         public DialogsInitize MapDialogConfig(DialogConfig defaultDialogConfig)
-        {
+        {           
             _dialogTypeConfigs.Add(_tempType, defaultDialogConfig);
             return this;
         }

@@ -11,7 +11,7 @@ namespace Box.Plugs.Dialog
         private Dictionary<DialogType, Func<IDialogElement>> _dialogTypeViews;
         private Dictionary<DialogType, DialogConfig> _dialogTypeConfigs;
         private Func<View> _toastViewFunc;
-        private DialogType _tempType;
+        private DialogType? _tempType;
         private static DialogsInitize DialogsServerInstance;
 
         private DialogsInitize()
@@ -25,6 +25,10 @@ namespace Box.Plugs.Dialog
 
         public DialogsInitize MapDialogFromContentView(DialogType dialogType, Func<IDialogElement> viewCreator)
         {
+            if (_dialogTypeViews.ContainsKey(dialogType))
+            {
+                return this;
+            }
             _tempType = dialogType;
             _dialogTypeViews.Add(dialogType, viewCreator);
             return this;
@@ -32,7 +36,11 @@ namespace Box.Plugs.Dialog
 
         public DialogsInitize MapDialogConfig(DialogConfig defaultDialogConfig)
         {
-            _dialogTypeConfigs.Add(_tempType, defaultDialogConfig);
+            if (!_tempType.HasValue)
+            {
+                return this;
+            }
+            _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
             return this;
         }
 
@@ -54,23 +62,24 @@ namespace Box.Plugs.Dialog
             return DialogsServerInstance;
         }
 
-        public View GetInitDialogContentView(DialogType dialogType) 
+        public View GetInitDialogContentView(DialogType dialogType)
         {
             return _dialogTypeViews.ContainsKey(dialogType) ? _dialogTypeViews[dialogType].Invoke() as View
                     : null;
         }
 
         public DialogConfig GetInitDialogConfig(DialogType dialogType)
-        {           
-            return _dialogTypeConfigs.ContainsKey(dialogType) ? _dialogTypeConfigs[dialogType] 
+        {
+            return _dialogTypeConfigs.ContainsKey(dialogType) ? _dialogTypeConfigs[dialogType]
                 : null;
         }
 
-        public View GetInitToastView() 
+        public View GetInitToastView()
         {
             return _toastViewFunc?.Invoke();
         }
     }
+
 
 
 }

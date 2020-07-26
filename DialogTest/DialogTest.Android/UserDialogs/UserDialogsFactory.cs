@@ -14,6 +14,7 @@ using Box.Plugs.Dialog;
 using DialogTest.Dialog;
 using DialogTest.Droid.UserDialogs;
 using Plugin.CurrentActivity;
+using UserDialogs;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -80,6 +81,38 @@ namespace BoxApp.Droid.DroidRender.UserDialogs
             var dialogFragment = new BaseDialogFragment2(_activity, contentView, config, dialogMsg, dialogResult);
             var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager,contentView ,mission);
             return dialogDroid;
+        }
+
+        /// <summary>
+        /// PopupView
+        /// </summary>
+        /// <param name="baseView"></param>
+        /// <param name="popupView"></param>
+        /// <param name="dialogMsg"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public IDialog PopupView(Xamarin.Forms.View baseView, Xamarin.Forms.View popupView, IDialogMsg dialogMsg, DialogConfig config, double space = 10)
+        {
+            if (baseView == null||popupView==null)
+            {
+                throw new ArgumentException($"dialog contentView is null");
+            }
+            var baseViewNative = baseView.ConvertFormsToNative();
+          
+            var sc = new int[2] ;
+            baseViewNative.GetLocationInWindow(sc);
+            var resources = _activity.ApplicationContext.Resources;
+            int resourceId = resources.GetIdentifier("status_bar_height", "dimen", "android");
+            int height = resources.GetDimensionPixelSize(resourceId);
+
+            if (config==null)
+            {
+                config = new DialogConfig();
+                config.DialogPosition = DialogPosition.Custom;
+                config.XOffset = sc[0];            
+                config.YOffset =(sc[1]-height)/DeviceDisplay.MainDisplayInfo.Density + baseView.Height;
+            }
+            return CreateDialog(popupView, dialogMsg, config);
         }
 
         public void Toast(string msg, bool islong = false, bool isNative = false)

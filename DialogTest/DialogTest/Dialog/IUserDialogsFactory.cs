@@ -14,6 +14,8 @@ namespace Box.Plugs.Dialog
         IDialog CreateDialog(DialogType dialogType, IDialogMsg dialogMsg, DialogConfig config = null);
 
         IDialog CreateDialog(View contentView, IDialogMsg dialogMsg, DialogConfig config);
+
+        IDialog PopupView(View baseView, View popupView, IDialogMsg dialogMsg, DialogConfig config,double space=10);
     }
 
     public enum DialogType 

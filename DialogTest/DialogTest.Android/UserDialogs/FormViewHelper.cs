@@ -30,6 +30,12 @@ namespace UserDialogs
             return nativeView;
         }
 
-        
+        public static View ConvertFormsToNative(this Xamarin.Forms.View view)
+        {
+            var vRenderer = view.GetRenderer();           
+            var nativeView = vRenderer.View;         
+            return nativeView;
+        }
+
     }
 }

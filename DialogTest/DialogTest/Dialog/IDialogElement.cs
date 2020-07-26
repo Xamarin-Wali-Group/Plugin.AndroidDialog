@@ -32,5 +32,6 @@ namespace Box.Plugs.Dialog
         void OnDestory();
     }
 
+    
 
 }

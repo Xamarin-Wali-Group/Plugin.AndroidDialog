@@ -40,5 +40,12 @@ namespace DialogTest
             var dialogFac = DependencyService.Get<IUserDialogsFactory>();
             dialogFac.Toast("34444");
         }
+
+        private void Btn_Pupup(object sender, EventArgs e)
+        {
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            var dialog=dialogFac.PopupView(sender as View, new TestPopupView(), null, null) ;
+            dialog.Show();
+        }
     }
 }

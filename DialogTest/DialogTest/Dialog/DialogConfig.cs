@@ -37,12 +37,12 @@ namespace Box.Plugs.Dialog
         /// <summary>
         /// X偏移距离
         /// </summary>
-        public float XOffset { get; set; } 
+        public double XOffset { get; set; } 
 
         /// <summary>
         /// Y偏移距离
         /// </summary>
-        public float YOffset { get; set; }
+        public double YOffset { get; set; }
 
         /// <summary>
         /// 对话框动画效果，可在对应平台xml中编写 

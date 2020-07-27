@@ -41,10 +41,71 @@ namespace DialogTest
             dialogFac.Toast("34444");
         }
 
+        /// <summary>
+        /// 左下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Pupup(object sender, EventArgs e)
         {
             var dialogFac = DependencyService.Get<IUserDialogsFactory>();
-            var dialog=dialogFac.PopupView(sender as View, new TestPopupView(), null, null) ;
+            var dialog=dialogFac.PopupView(sender as View, new TestPopupView(), null, new DialogConfig() 
+            {
+                DialogPosition=DialogPosition.Buttom,
+                DialogAnimationConfig= "Dialog_tooltip",
+              
+            }) ;
+            dialog.Show();
+        }
+
+        /// <summary>
+        /// 右下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Pupup1(object sender, EventArgs e)
+        {
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            var dialog = dialogFac.PopupView(sender as View, new TestPopupView(), null, new DialogConfig()
+            {
+                DialogPosition = DialogPosition.Buttom,
+                DialogAnimationConfig = "Dialog_tooltip",
+
+            });
+            dialog.Show();
+        }
+
+        /// <summary>
+        /// 左下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Pupup2(object sender, EventArgs e)
+        {
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            var dialog = dialogFac.PopupView(sender as View, new TestPopupView(), null, new DialogConfig()
+            {
+                DialogPosition = DialogPosition.Top,
+                DialogAnimationConfig = "Dialog_popup",
+
+            });
+            dialog.Show();
+        }
+
+        /// <summary>
+        /// 右下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Pupup3(object sender, EventArgs e)
+        {
+            var dialogFac = DependencyService.Get<IUserDialogsFactory>();
+            var dialog = dialogFac.PopupView(sender as View, new TestPopupView(), null, new DialogConfig()
+            {
+                DialogPosition = DialogPosition.Top,
+                DialogAnimationConfig = "Dialog_grow_fade",
+
+            });
             dialog.Show();
         }
     }

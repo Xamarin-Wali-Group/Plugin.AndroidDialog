@@ -8,13 +8,18 @@
 
     <StackLayout>
 
+
+        <!-- Place new controls here -->
+        <StackLayout  Orientation="Horizontal" >
+            <Button Text="测试左下popup" Clicked="Btn_Pupup"  HorizontalOptions="Start"></Button>
+            <Button Text="测试右下popup" Clicked="Btn_Pupup1"  HorizontalOptions="EndAndExpand"></Button>
+        </StackLayout>
         <Button Text="点击弹窗" Clicked="Button_Clicked"></Button>
         <Button Text="测试Toast" Clicked="Btn_Toast"></Button>
-        <!-- Place new controls here -->
-        <StackLayout Padding="20">
-            <Button Text="测试popup" Clicked="Btn_Pupup"></Button>
+        <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+            <Button Text="测试左下popup" Clicked="Btn_Pupup2" VerticalOptions="EndAndExpand"  HorizontalOptions="Start"></Button>
+            <Button Text="测试右下popup" Clicked="Btn_Pupup3"  VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand"></Button>
         </StackLayout>
-     
     </StackLayout>
 
 </ContentPage>

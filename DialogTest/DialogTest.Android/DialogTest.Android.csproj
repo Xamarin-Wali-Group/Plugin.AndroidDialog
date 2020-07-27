@@ -78,6 +78,7 @@
     <Compile Include="UserDialogs\FormViewHelper.cs" />
     <Compile Include="UserDialogs\LoadDialogFragment.cs" />
     <Compile Include="UserDialogs\NativeDialogBtnClickListener.cs" />
+    <Compile Include="UserDialogs\PopupDialogFragment.cs" />
     <Compile Include="UserDialogs\ToastDialogUtil.cs" />
     <Compile Include="UserDialogs\UserDialogsFactory.cs" />
   </ItemGroup>

@@ -8,19 +8,11 @@
              x:Class="DialogTest.DialogTestView.TestPopupView">
   <ContentView.Content>
       <StackLayout>
-            <!--<CollectionView x:Name="test"> 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding }"></Label>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>-->
+           
             <StackLayout x:Name="test">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
+                        <StackLayout Orientation="Horizontal" Padding="65,10">
                             <Label Text="{Binding }"></Label>
                         </StackLayout>
                     </DataTemplate>

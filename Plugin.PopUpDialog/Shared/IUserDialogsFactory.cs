@@ -14,6 +14,8 @@ namespace Plugin.PopUpDialog.Shared
         IDialog CreateDialog(DialogType dialogType, IDialogMsg dialogMsg, DialogConfig config = null);
 
         IDialog CreateDialog(View contentView, IDialogMsg dialogMsg, DialogConfig config);
+
+        IDialog PopupView(View baseView, View popupView, IDialogMsg dialogMsg, DialogConfig config);
     }
 
     public enum DialogType 

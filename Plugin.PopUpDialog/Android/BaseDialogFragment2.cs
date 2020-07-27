@@ -157,7 +157,7 @@ namespace Plugin.PopUpDialog.Android
 
         #region 设置Dialog的window属性
 
-        void SetDialogWindowPosition(WindowManagerLayoutParams attrs)
+        protected virtual void SetDialogWindowPosition(WindowManagerLayoutParams attrs)
         {
             if (_dialogConfig.DialogPosition == DialogPosition.Custom)
             {

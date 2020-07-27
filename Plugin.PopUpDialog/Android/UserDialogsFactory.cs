@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using DialogTest.Droid.UserDialogs;
 using Plugin.PopUpDialog.Shared;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -106,6 +107,62 @@ namespace Plugin.PopUpDialog.Android
             {
                 toast.Show();
             }
+        }
+
+        /// <summary>
+        /// PopupView
+        /// </summary>
+        /// <param name="baseView"></param>
+        /// <param name="popupView"></param>
+        /// <param name="dialogMsg"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public IDialog PopupView(Xamarin.Forms.View baseView, Xamarin.Forms.View popupView, IDialogMsg dialogMsg, DialogConfig config)
+        {
+            if (baseView == null || popupView == null)
+            {
+                throw new ArgumentException($"dialog contentView is null");
+            }
+
+            if (config == null)
+            {
+                config = new DialogConfig()
+                {
+                    DialogPosition = DialogPosition.Buttom
+                };
+            }
+            IDialogResult dialogResult = null;
+            TaskCompletionSource<string> mission = null;
+            if (popupView is IDialogElement)
+            {
+                DialogResultManager manager = new DialogResultManager();
+                manager.Build();
+                dialogResult = manager.GetDialogResult();
+                mission = manager.GetResultMission();
+            }
+            var rect = GetBaseViewRect(baseView);
+            var dialogFragment = new PopupDialogFragment(_activity, popupView, config, dialogMsg, rect, dialogResult);
+            var dialogDroid = new DialogInstance(dialogFragment, _fragmentManager, popupView, mission);
+            return dialogDroid;
+
+        }
+
+
+        int GetStatusHeight()
+        {
+            var resources = _activity.ApplicationContext.Resources;
+            int resourceId = resources.GetIdentifier("status_bar_height", "dimen", "android");
+            int height = resources.GetDimensionPixelSize(resourceId);
+            return height;
+        }
+
+        BaseViewRect GetBaseViewRect(Xamarin.Forms.View baseView)
+        {
+            int statusHeight = GetStatusHeight();
+            var baseViewNative = baseView.ConvertFormsToNative();
+            var sc = new int[2];
+            baseViewNative.GetLocationInWindow(sc);
+            return new BaseViewRect(sc[0], sc[1] - statusHeight, baseViewNative.Width, baseViewNative.Height);
         }
     }
 }

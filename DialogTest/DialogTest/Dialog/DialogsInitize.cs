@@ -36,11 +36,10 @@ namespace Box.Plugs.Dialog
 
         public DialogsInitize MapDialogConfig(DialogConfig defaultDialogConfig)
         {
-            if (!_tempType.HasValue)
+            if (_tempType.HasValue &&! _dialogTypeConfigs.ContainsKey(_tempType.Value))
             {
-                return this;
-            }
-            _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
+                _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
+            }           
             return this;
         }
 

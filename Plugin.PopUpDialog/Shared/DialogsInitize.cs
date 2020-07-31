@@ -36,11 +36,10 @@ namespace Plugin.PopUpDialog.Shared
 
         public DialogsInitize MapDialogConfig(DialogConfig defaultDialogConfig)
         {
-            if (!_tempType.HasValue)
+            if (_tempType.HasValue && !_dialogTypeConfigs.ContainsKey(_tempType.Value))
             {
-                return this;
-            }
-            _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
+                _dialogTypeConfigs.Add(_tempType.Value, defaultDialogConfig);
+            }            
             return this;
         }
 
@@ -62,19 +61,19 @@ namespace Plugin.PopUpDialog.Shared
             return DialogsServerInstance;
         }
 
-        public View GetInitDialogContentView(DialogType dialogType) 
+        public View GetInitDialogContentView(DialogType dialogType)
         {
             return _dialogTypeViews.ContainsKey(dialogType) ? _dialogTypeViews[dialogType].Invoke() as View
                     : null;
         }
 
         public DialogConfig GetInitDialogConfig(DialogType dialogType)
-        {           
-            return _dialogTypeConfigs.ContainsKey(dialogType) ? _dialogTypeConfigs[dialogType] 
+        {
+            return _dialogTypeConfigs.ContainsKey(dialogType) ? _dialogTypeConfigs[dialogType]
                 : null;
         }
 
-        public View GetInitToastView() 
+        public View GetInitToastView()
         {
             return _toastViewFunc?.Invoke();
         }
